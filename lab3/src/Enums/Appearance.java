@@ -6,7 +6,7 @@ public enum Appearance {
     COMBED_WITH_SMALL_ISSUE("Причесанный, однако один вихор на макушке все-таки торчит"),
     DEFAULT("");
 
-    private String appearance;
+    private final String appearance;
 
     Appearance(String appearance) {
         this.appearance = appearance;

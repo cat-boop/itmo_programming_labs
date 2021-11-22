@@ -7,6 +7,7 @@ public enum HarpSize {
     Huge("Совсем огромная арфа: чтобы играть на ней, нужно взбираться на лесенку");
 
     private final String characteristic;
+
     HarpSize(String characteristic) {
         this.characteristic = characteristic;
     }

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>C:/Users/sushe/Desktop/Лабораторные/Программирование/lab3/src</OriginalElement>
+  <nodes>
+    <node x="496.5802447683109" y="562.1748878923767">Visitor</node>
+    <node x="176.56125980941704" y="586.5">OtherVisitor</node>
+    <node x="63.5564331091183" y="922.2548579970107">Enums.Decoration</node>
+    <node x="-29.457725149476857" y="586.5">Baby</node>
+    <node x="829.9038621076231" y="562.1748878923767">Citizen</node>
+    <node x="-200.33426008968615" y="221.59790732436477">Enums.HarpSize</node>
+    <node x="592.0108426756352" y="232.59790732436477">Alcove</node>
+    <node x="324.76738415545606" y="878.2548579970108">Enums.Appearance</node>
+    <node x="236.85874999999993" y="78.5">Interfaces.ThingInterface</node>
+    <node x="37.27172178624818" y="232.59790732436477">Harp</node>
+    <node x="904.9286304185351" y="255.09790732436477">CapacityOnFloor</node>
+    <node x="314.64128223094167" y="232.59790732436477">AbstractClasses.AbstractHuman</node>
+    <node x="592.5802447683109" y="923.2548579970107">Main</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="AbstractClasses.AbstractHuman" target="Interfaces.ThingInterface" relationship="REALIZATION">
+      <point x="-2.822309416501412E-4" y="-50.999907324364756" />
+      <point x="401.641" y="184.0" />
+      <point x="307.859" y="184.0" />
+      <point x="2.500000000509317E-4" y="28.0" />
+    </edge>
+    <edge source="Harp" target="Interfaces.ThingInterface" relationship="REALIZATION">
+      <point x="2.782137518266836E-4" y="-95.49990732436476" />
+      <point x="124.272" y="184.0" />
+      <point x="307.859" y="184.0" />
+      <point x="2.500000000509317E-4" y="28.0" />
+    </edge>
+    <edge source="Citizen" target="AbstractClasses.AbstractHuman" relationship="GENERALIZATION">
+      <point x="1.3789237686978595E-4" y="-83.9998878923767" />
+      <point x="916.904" y="515.0" />
+      <point x="401.6416697496263" y="515.0" />
+      <point x="3.875186846471479E-4" y="51.0" />
+    </edge>
+    <edge source="Baby" target="AbstractClasses.AbstractHuman" relationship="GENERALIZATION">
+      <point x="-2.7485052314091263E-4" y="-95.0" />
+      <point x="57.542" y="515.0" />
+      <point x="401.6416697496263" y="515.0" />
+      <point x="3.875186846471479E-4" y="51.0" />
+    </edge>
+    <edge source="Alcove" target="Interfaces.ThingInterface" relationship="REALIZATION">
+      <point x="1.5732436474991118E-4" y="-117.49990732436476" />
+      <point x="726.011" y="184.0" />
+      <point x="307.859" y="184.0" />
+      <point x="2.500000000509317E-4" y="28.0" />
+    </edge>
+    <edge source="Visitor" target="AbstractClasses.AbstractHuman" relationship="GENERALIZATION">
+      <point x="-139.0002447683109" y="1.1210762329483259E-4" />
+      <point x="481.0" y="701.675" />
+      <point x="481.0" y="515.0" />
+      <point x="401.6416697496263" y="515.0" />
+      <point x="3.875186846471479E-4" y="51.0" />
+    </edge>
+    <edge source="OtherVisitor" target="AbstractClasses.AbstractHuman" relationship="GENERALIZATION">
+      <point x="143.99974019058294" y="0.0" />
+      <point x="481.0" y="714.5" />
+      <point x="481.0" y="515.0" />
+      <point x="401.6416697496263" y="515.0" />
+      <point x="3.875186846471479E-4" y="51.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.6470019342359767" showDependencies="false" x="463.0" y="584.9999999999999" />
+  <SelectedNodes>
+    <node>Enums.Decoration</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

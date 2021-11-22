@@ -1,10 +1,11 @@
+package Things;
+
 import Enums.HarpSize;
-import Interfaces.ThingInterface;
 
 import java.util.Arrays;
 
 public class Harp implements ThingInterface {
-    private final String name = "\"Арфа\"";
+    private final String name = "Арфа";
     private final HarpSize[] harpSizes;
 
     public Harp(HarpSize... harpSizes) {

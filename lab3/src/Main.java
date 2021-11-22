@@ -1,6 +1,11 @@
-import Enums.Appearance;
-import Enums.Decoration;
-import Enums.HarpSize;
+import Characters.Baby;
+import Characters.Citizen;
+import Characters.OtherVisitor;
+import Characters.Visitor;
+import Enums.*;
+import Things.Alcove;
+import Things.CapacityOnFloor;
+import Things.Harp;
 
 public class Main {
     private final static int NUMBER_OF_FLOORS = 2;
@@ -9,12 +14,12 @@ public class Main {
     private final static String ZMEEVKA_CITY = "Змеевка";
 
     public static void main(String[] args) {
-        //На втором этаже беседки, которая была украшена цветами, помещался оркестр из десяти малышек.
-        CapacityOnFloor capacityOnFloor = new CapacityOnFloor(FLOOR, CAPACITY_ON_FLOOR, new Baby());
+        Baby baby = new Baby();
+
+        CapacityOnFloor capacityOnFloor = new CapacityOnFloor(FLOOR, CAPACITY_ON_FLOOR, baby);
         Alcove alcove = new Alcove(NUMBER_OF_FLOORS, capacityOnFloor, Decoration.FLOWER);
         alcove.join();
 
-        Baby baby = new Baby();
         Harp harp = new Harp(HarpSize.TooSmall, HarpSize.Middle, HarpSize.Huge, HarpSize.TooBig);
         baby.playOn(harp);
         harp.join();

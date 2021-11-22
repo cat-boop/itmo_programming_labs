@@ -1,11 +1,12 @@
+package Things;
+
 import Enums.Decoration;
-import Interfaces.ThingInterface;
 
 public class Alcove implements ThingInterface {
     private final int numberOfFloors;
     private final CapacityOnFloor capacityOnFloor;
     private final Decoration decoration;
-    private final String name = "\"Беседка\"";
+    private final String name = "Беседка";
 
     public Alcove(int numberOfFloors, CapacityOnFloor capacityOnFloor, Decoration decoration) {
         this.numberOfFloors = numberOfFloors;

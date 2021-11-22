@@ -1,3 +1,5 @@
+package Things;
+
 public class CapacityOnFloor {
     private final int floor;
     private final int numberOfCharacters;

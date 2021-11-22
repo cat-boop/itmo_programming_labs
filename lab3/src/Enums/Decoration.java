@@ -3,7 +3,7 @@ package Enums;
 public enum Decoration {
     FLOWER {
         public String getName() {
-            return "\"Цветок\"";
+            return "Цветок";
         }
     },
     DEFAULT {
