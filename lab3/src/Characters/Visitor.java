@@ -1,5 +1,8 @@
 package Characters;
 
+import Enums.Appearance;
+import Things.Shirt;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,6 +12,8 @@ public class Visitor extends Human {
     private final Visitor[] comeAfter;
     private boolean invited;
     private int attemptsToGetToProm = 0;
+    private Appearance[] appearances;
+    private Shirt shirt;
 
     public Visitor(String name, String city) {
         this(name, city, false);
@@ -29,6 +34,20 @@ public class Visitor extends Human {
         this.comeAfter = comeAfter;
     }
 
+    public void analyzeAppearance() {
+        System.out.print("Внешний вид персонажа: ");
+        if (appearances == null && shirt == null) System.out.print("Ничем не примечательный");
+        else {
+            if (shirt != null) {
+                System.out.print(shirt.getCharacteristic() + "; ");
+            }
+            if (appearances != null) {
+                for (Appearance appearance : appearances) System.out.print(appearance.getCharacteristic() + "; ");
+            }
+        }
+        System.out.println();
+    }
+
     public void appear() {
         if (comeAfter.length == 0) System.out.print(this + " приехал первый.");
         else {
@@ -44,17 +63,16 @@ public class Visitor extends Human {
 
     public boolean comeToProm() {
         attemptsToGetToProm++;
+        System.out.print(this + ", пытается " + attemptsToGetToProm + " раз попасть на бал, ");
         if (!isInvited()) {
-            System.out.println(this + ", пытается попасть на бал, "
-                    + "но у него нет приглашения. Что же персонаж предпримет?");
+            System.out.println("но у него нет приглашения. Что же персонаж предпримет?");
             return false;
         }
         if (isInvited() && attemptsToGetToProm == 1) {
-            System.out.println(this + ", пытается попасть на бал, и так как у него есть приглашение, он остается.");
+            System.out.println("и так как у него есть приглашение, он остается.");
         }
         if (isInvited() && attemptsToGetToProm > 1) {
-            System.out.println(this + ", опять пытается попасть на бал, однако теперь у него есть приглашение, " +
-                    "поэтому он остается!");
+            System.out.println("однако теперь у него есть приглашение, " + "поэтому он остается!");
         }
         System.out.println();
         return true;
@@ -85,6 +103,11 @@ public class Visitor extends Human {
 
     public boolean isInvited() {
         return invited;
+    }
+
+    public void setAppearance(Shirt shirt, Appearance... appearances) {
+        this.shirt = shirt;
+        this.appearances = appearances;
     }
 
     public String getCity() {

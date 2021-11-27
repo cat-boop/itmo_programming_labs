@@ -40,18 +40,17 @@ public class Main {
         Citizen citizen = new Citizen("Жители");
         citizen.comeAndWaitFor(new Visitor("Гости", ZMEEVKA_CITY));
 
-        MainVisitor firstVisitor = new MainVisitor("Гвоздик", ZMEEVKA_CITY, MAIN_VISITOR_INVITATION,
-                new Shirt(true), Appearance.COMBED, Appearance.WASHED);
-        MainVisitor secondVisitor = new MainVisitor("Шурупчик", ZMEEVKA_CITY, MAIN_VISITOR_INVITATION,
-                firstVisitor);
-        MainVisitor thirdVisitor = new MainVisitor("Бублик", ZMEEVKA_CITY, MAIN_VISITOR_INVITATION,
-                firstVisitor);
+        Visitor firstVisitor = new Visitor("Гвоздик", ZMEEVKA_CITY, MAIN_VISITOR_INVITATION);
+        firstVisitor.setAppearance(new Shirt(true), Appearance.WASHED, Appearance.COMBED);
 
-        MainVisitor[] mainVisitors = {firstVisitor, secondVisitor, thirdVisitor};
-        for (MainVisitor mainVisitor : mainVisitors) {
-            mainVisitor.appear();
-            mainVisitor.analyzeAppearance();
-            mainVisitor.comeToProm();
+        Visitor secondVisitor = new Visitor("Шурупчик", ZMEEVKA_CITY, MAIN_VISITOR_INVITATION, firstVisitor);
+        Visitor thirdVisitor = new Visitor("Бублик", ZMEEVKA_CITY, MAIN_VISITOR_INVITATION, firstVisitor);
+
+        Visitor[] visitors = {firstVisitor, secondVisitor, thirdVisitor};
+        for (Visitor visitor : visitors) {
+            visitor.appear();
+            visitor.analyzeAppearance();
+            visitor.comeToProm();
         }
 
         Visitor otherVisitors = new Visitor("Остальные жители", ZMEEVKA_CITY, false, secondVisitor, thirdVisitor);
