@@ -83,8 +83,7 @@ public class Visitor extends Human {
         for (Human human : humans) {
             if (map.containsKey(human)) {
                 map.replace(human, map.get(human) + 1);
-            }
-            else {
+            } else {
                 map.put(human, 1);
             }
         }
@@ -127,10 +126,12 @@ public class Visitor extends Human {
 
     @Override
     public boolean equals(Object object) {
-        if (object == null || object.getClass() != getClass()) return false;
+        if (this == object) return true;
+        if (!(object instanceof Visitor)) return false;
 
         Visitor visitor = (Visitor) object;
-        return getName().equals(visitor.getName()) && city.equals(visitor.city) &&
-                Arrays.equals(comeAfter, visitor.comeAfter) && (invited == visitor.invited);
+        return getName().equals(visitor.getName()) && city.equals(visitor.city) && Arrays.equals(comeAfter, visitor.comeAfter)
+                && (attemptsToGetToProm == visitor.attemptsToGetToProm) && (invited == visitor.invited)
+                && Arrays.equals(appearances, visitor.appearances) && (shirt == null || shirt.equals(visitor.shirt));
     }
 }
