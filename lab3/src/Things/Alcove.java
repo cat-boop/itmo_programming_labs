@@ -2,15 +2,17 @@ package Things;
 
 import Enums.Decoration;
 
+import java.util.Arrays;
+
 public class Alcove implements ThingInterface {
     private final int numberOfFloors;
-    private final CapacityOnFloor capacityOnFloor;
+    private final Floor[] floors;
     private final Decoration decoration;
     private final String name = "Беседка";
 
-    public Alcove(int numberOfFloors, CapacityOnFloor capacityOnFloor, Decoration decoration) {
+    public Alcove(int numberOfFloors, Decoration decoration, Floor... floors) {
         this.numberOfFloors = numberOfFloors;
-        this.capacityOnFloor = capacityOnFloor;
+        this.floors = floors;
         this.decoration = decoration;
     }
 
@@ -19,17 +21,11 @@ public class Alcove implements ThingInterface {
         return "украшена Объектом " + decoration.getName();
     }
 
-    public String getCapacityOnFloor() {
-        int numberOfFloor = capacityOnFloor.getFloor();
-        int numberOfCharacters = capacityOnFloor.getNumberOfCharacters();
-        Object character = capacityOnFloor.getCharacter();
-        return "на " + numberOfFloor + " этаже Обьекта " + name + " вмещается " +
-                numberOfCharacters + " Персонажей " + character.toString() + ".";
-    }
-
     public void join() {
         System.out.println("Объект " + name + ", которая " + getDecoration() + ", имеет " + numberOfFloors + " этажа.");
-        System.out.println("При этом, " + getCapacityOnFloor() + "\n");
+        System.out.println("При этом:");
+        for (Floor floor : floors) System.out.println(floor);
+        System.out.println();
     }
 
     @Override
@@ -44,7 +40,7 @@ public class Alcove implements ThingInterface {
 
     @Override
     public int hashCode() {
-        return Integer.hashCode(numberOfFloors) + capacityOnFloor.hashCode() + decoration.hashCode()
+        return Integer.hashCode(numberOfFloors) + Arrays.hashCode(floors) + decoration.hashCode()
                 + name.hashCode();
     }
 
@@ -54,7 +50,7 @@ public class Alcove implements ThingInterface {
         if (!(object instanceof Alcove)) return false;
 
         Alcove alcove = (Alcove) object;
-        return numberOfFloors == alcove.numberOfFloors && capacityOnFloor.equals(alcove.capacityOnFloor)
+        return numberOfFloors == alcove.numberOfFloors && Arrays.equals(floors, alcove.floors)
                 && decoration.equals(alcove.decoration);
     }
 }

@@ -1,9 +1,11 @@
 package Characters;
 
-public abstract class AbstractHuman implements HumanInterface {
+import Things.ThingInterface;
+
+public abstract class Human implements ThingInterface {
     private final String abstractName;
 
-    protected AbstractHuman(String name) {
+    protected Human(String name) {
         this.abstractName = name;
     }
 

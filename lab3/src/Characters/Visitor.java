@@ -1,44 +1,90 @@
 package Characters;
 
-import Enums.Appearance;
-
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
-public class Visitor extends AbstractHuman {
+public class Visitor extends Human {
     private final String city;
-    private final Visitor comeAfter;
-    private final Appearance[] appearances;
+    private final Visitor[] comeAfter;
+    private boolean invited;
+    private int attemptsToGetToProm = 0;
 
     public Visitor(String name, String city) {
-        this(name, city, null, new Appearance[0]);
+        this(name, city, false);
     }
 
-    public Visitor(String name, String city, Appearance... appearances) {
-        this(name, city, null, appearances);
+    public Visitor(String name, String city, Visitor... comeAfter) {
+        this(name, city, false, comeAfter);
     }
 
-    public Visitor(String name, String city, Visitor comeAfter, Appearance... appearances) {
+    public Visitor(String name, String city, boolean wasInvited) {
+        this(name, city, wasInvited, new Visitor[0]);
+    }
+
+    public Visitor(String name, String city, boolean wasInvited, Visitor... comeAfter) {
         super(name);
         this.city = city;
+        this.invited = wasInvited;
         this.comeAfter = comeAfter;
-        this.appearances = appearances;
     }
 
-    public void come() {
-        System.out.print(this + ", приехал ");
-        if (comeAfter == null) System.out.println("первым.");
-        else System.out.println("после Персонажа " + comeAfter.getName() + ".");
-    }
-
-
-    public void analyzeAppearance() {
-        if (appearances.length == 0 || (appearances.length == 1 && appearances[0] == Appearance.DEFAULT))
-            System.out.print("Про внешний вид Персонажа " + getName() + " ничего не известно.");
+    public void appear() {
+        if (comeAfter.length == 0) System.out.print(this + " приехал первый.");
         else {
-            System.out.print("Внешний вид Персонажа " + getName() + ": ");
-            for (Appearance appearance : appearances) System.out.print(appearance.getAppearance() + "; ");
+            System.out.print(this + ", стал появляться после Персонажей: ");
+            for (Visitor visitor : comeAfter) {
+                String additional = ", ";
+                if (visitor.equals(comeAfter[comeAfter.length - 1])) additional = ".";
+                System.out.print(visitor.getName() + additional);
+            }
         }
-        System.out.println("\n");
+        System.out.println();
+    }
+
+    public boolean comeToProm() {
+        attemptsToGetToProm++;
+        if (!isInvited()) {
+            System.out.println(this + ", пытается попасть на бал, "
+                    + "но у него нет приглашения. Что же персонаж предпримет?");
+            return false;
+        }
+        if (isInvited() && attemptsToGetToProm == 1) {
+            System.out.println(this + ", пытается попасть на бал, и так как у него есть приглашение, он остается.");
+        }
+        if (isInvited() && attemptsToGetToProm > 1) {
+            System.out.println(this + ", опять пытается попасть на бал, однако теперь у него есть приглашение, " +
+                    "поэтому он остается!");
+        }
+        System.out.println();
+        return true;
+    }
+
+    public void sayThanksTo(Human... humans) {
+        Map<Human, Integer> map = new HashMap<>();
+        for (Human human : humans) {
+            if (map.containsKey(human)) {
+                map.replace(human, map.get(human) + 1);
+            }
+            else {
+                map.put(human, 1);
+            }
+        }
+
+        System.out.println(this + ", благодарит:");
+        for (Map.Entry<Human, Integer> item : map.entrySet()) {
+            System.out.println(item.getValue() + " Персонажей " + item.getKey().getName());
+        }
+        System.out.println(this + ", получает приглашение остаться на бал!");
+        setInvited(true);
+    }
+
+    public void setInvited(boolean invited) {
+        this.invited = invited;
+    }
+
+    public boolean isInvited() {
+        return invited;
     }
 
     public String getCity() {
@@ -52,17 +98,16 @@ public class Visitor extends AbstractHuman {
 
     @Override
     public int hashCode() {
-        return getName().hashCode() + city.hashCode() + (comeAfter != null ? comeAfter.hashCode() : 0)
-                + Arrays.hashCode(appearances);
+        return getName().hashCode() + city.hashCode() + (comeAfter != null ? Arrays.hashCode(comeAfter) : 0)
+                + Boolean.hashCode(invited);
     }
 
     @Override
     public boolean equals(Object object) {
-        if (this == object) return true;
-        if (!(object instanceof Visitor)) return false;
+        if (object == null || object.getClass() != getClass()) return false;
 
         Visitor visitor = (Visitor) object;
-        return getName().equals(visitor.getName()) && city.equals(visitor.city) && comeAfter.equals(visitor.comeAfter)
-                && Arrays.equals(appearances, visitor.appearances);
+        return getName().equals(visitor.getName()) && city.equals(visitor.city) &&
+                Arrays.equals(comeAfter, visitor.comeAfter) && (invited == visitor.invited);
     }
 }

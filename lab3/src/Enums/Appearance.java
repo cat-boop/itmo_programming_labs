@@ -1,10 +1,8 @@
 package Enums;
 
 public enum Appearance {
-    CLEAN_SHIRT("Чистая рубашка"),
     WASHED("Умытый"),
-    COMBED_WITH_SMALL_ISSUE("Причесанный, однако один вихор на макушке все-таки торчит"),
-    DEFAULT("");
+    COMBED("Причесанный");
 
     private final String appearance;
 
@@ -12,7 +10,7 @@ public enum Appearance {
         this.appearance = appearance;
     }
 
-    public String getAppearance() {
+    public String getCharacteristic() {
         return appearance;
     }
 }

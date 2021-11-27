@@ -1,26 +1,25 @@
 package Characters;
 
-public class Citizen extends AbstractHuman {
-    private final Visitor visitor;
-
-    public Citizen(String name, Visitor visitor) {
+public class Citizen extends Human {
+    public Citizen(String name) {
         super(name);
-        this.visitor = visitor;
     }
 
-    public void come() {
-        System.out.println("Вечер ещё не наступил, но все Персонажи " + getName() + " ждали Персонажей " + visitor.getName()
-                + " из города " + visitor.getCity() + ".");
+    public void comeAndWaitFor(Human human) {
+        String additional = "";
+        if (human instanceof Visitor) additional = " из города " + ((Visitor) human).getCity();
+        System.out.println("Вечер ещё не наступил, но все Персонажи " + getName() + " ждали Персонажей " +
+                human.getName() + additional + ".");
     }
 
     @Override
     public String toString() {
-        return "Персонаж " + getName() + ", который ждет Персонажа " + visitor.getName();
+        return "Персонаж " + getName();
     }
 
     @Override
     public int hashCode() {
-        return getName().hashCode() + visitor.hashCode();
+        return getName().hashCode();
     }
 
     @Override
@@ -29,6 +28,6 @@ public class Citizen extends AbstractHuman {
         if (!(object instanceof Citizen)) return false;
 
         Citizen citizen = (Citizen) object;
-        return getName().equals(citizen.getName()) && visitor.equals(citizen.visitor);
+        return getName().equals(citizen.getName());
     }
 }
