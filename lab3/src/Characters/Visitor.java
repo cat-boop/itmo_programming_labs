@@ -93,7 +93,7 @@ public class Visitor extends Human {
 
     @Override
     public String toString() {
-        return "Персожан с именем " + getName() + ", родом из города " + city;
+        return "Персонаж с именем " + getName() + ", родом из города " + city;
     }
 
     @Override
