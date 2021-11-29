@@ -38,27 +38,27 @@ public class Main {
         orchestra.join();
 
         Citizen citizen = new Citizen("Жители");
-        citizen.comeAndWaitFor(new Visitor("Гости", ZMEEVKA_CITY));
+        citizen.comeAndWaitFor(new Visitor("Гости", Location.ZMEEVKA));
 
-        Visitor firstVisitor = new Visitor("Гвоздик", ZMEEVKA_CITY, MAIN_VISITOR_INVITATION);
+        Visitor firstVisitor = new Visitor("Гвоздик", Location.ZMEEVKA, MAIN_VISITOR_INVITATION);
         firstVisitor.setAppearance(new Shirt(true), Appearance.WASHED, Appearance.COMBED);
 
-        Visitor secondVisitor = new Visitor("Шурупчик", ZMEEVKA_CITY, MAIN_VISITOR_INVITATION, firstVisitor);
-        Visitor thirdVisitor = new Visitor("Бублик", ZMEEVKA_CITY, MAIN_VISITOR_INVITATION, firstVisitor);
+        Visitor secondVisitor = new Visitor("Шурупчик", Location.ZMEEVKA, MAIN_VISITOR_INVITATION, firstVisitor);
+        Visitor thirdVisitor = new Visitor("Бублик", Location.ZMEEVKA, MAIN_VISITOR_INVITATION, firstVisitor);
 
         Visitor[] visitors = {firstVisitor, secondVisitor, thirdVisitor};
         for (Visitor visitor : visitors) {
             visitor.appear();
             visitor.analyzeAppearance();
-            visitor.comeToProm();
+            visitor.comeTo(Location.PROM);
         }
 
-        Visitor otherVisitors = new Visitor("Остальные жители", ZMEEVKA_CITY, false, secondVisitor, thirdVisitor);
+        Visitor otherVisitors = new Visitor("Остальные жители", Location.ZMEEVKA, false, secondVisitor, thirdVisitor);
         otherVisitors.appear();
-        boolean resultOfAttempt = otherVisitors.comeToProm();
+        boolean resultOfAttempt = otherVisitors.comeTo(Location.PROM);
         if (!resultOfAttempt) {
-            while (!otherVisitors.isInvited()) otherVisitors.sayThanksTo(babies);
-            otherVisitors.comeToProm();
+            while (!otherVisitors.isInvited()) otherVisitors.sayThanksTo(Location.PROM, babies);
+            otherVisitors.comeTo(Location.PROM);
         }
     }
 }

@@ -2,15 +2,15 @@ package Enums;
 
 public enum Decoration {
     FLOWER {
-        public String getName() {
+        public String toString() {
             return "Цветок";
         }
     },
     DEFAULT {
-        public String getName() {
+        public String toString() {
             return null;
         }
     };
 
-    public abstract String getName();
+    public abstract String toString();
 }

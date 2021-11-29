@@ -10,7 +10,7 @@ public enum Appearance {
         this.appearance = appearance;
     }
 
-    public String getCharacteristic() {
+    public String toString() {
         return appearance;
     }
 }

@@ -39,7 +39,7 @@ public class Baby extends Human implements Musician {
             return null;
         }
         System.out.println("Персонаж " + this + " играет на Объекте " + musicalInstrument.getName()
-                + ", который имеет характеристику: " + musicalInstrument.getInstrumentSize().getCharacteristic() +
+                + ", который имеет характеристику: " + musicalInstrument.getInstrumentSize().toString() +
                 " и издает звуки: " + musicalInstrument.getSound());
         return musicalInstrument.getSound();
     }

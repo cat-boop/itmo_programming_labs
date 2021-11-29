@@ -25,13 +25,13 @@ public class Orchestra implements ThingInterface {
             Musician musician = musicians.get(0);
             MusicalInstrument musicianMusicalInstrument = musician.getMusicalInstrument();
             System.out.println("Все Персонажи оркестра это " + musician + ", которые играют на " +
-                    musicianMusicalInstrument + " с характеристикой: " + musicianMusicalInstrument.getInstrumentSize().getCharacteristic());
+                    musicianMusicalInstrument + " с характеристикой: " + musicianMusicalInstrument.getInstrumentSize().toString());
         } else {
             System.out.println("Персонажи оркестра это:");
             for (Musician musician : musicians) {
                 MusicalInstrument musicianMusicalInstrument = musician.getMusicalInstrument();
                 System.out.println("Персонаж " + musician + ", который играет на " + musicianMusicalInstrument
-                + " с характеристикой: " + musicianMusicalInstrument.getInstrumentSize().getCharacteristic());
+                + " с характеристикой: " + musicianMusicalInstrument.getInstrumentSize().toString());
             }
         }
         System.out.println();

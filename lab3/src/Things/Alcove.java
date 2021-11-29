@@ -18,7 +18,7 @@ public class Alcove implements ThingInterface {
 
     public String getDecoration() {
         if (decoration == Decoration.DEFAULT) return "выглядит обычно";
-        return "украшена Объектом " + decoration.getName();
+        return "украшена Объектом " + decoration;
     }
 
     public void join() {

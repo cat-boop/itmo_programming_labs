@@ -14,7 +14,7 @@ public class MusicalInstrument implements ThingInterface {
     }
 
     public void join() {
-        System.out.println("Инструмент " + name + ", который имел характеристику: " + instrumentSize.getCharacteristic());
+        System.out.println("Инструмент " + name + ", который имел характеристику: " + instrumentSize);
     }
 
     public String getName() {

@@ -12,7 +12,7 @@ public enum InstrumentSize {
         this.characteristic = characteristic;
     }
 
-    public String getCharacteristic() {
+    public String toString() {
         return characteristic;
     }
 }

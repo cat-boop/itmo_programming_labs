@@ -7,7 +7,7 @@ public class Citizen extends Human {
 
     public void comeAndWaitFor(Human human) {
         String additional = "";
-        if (human instanceof Visitor) additional = " из города " + ((Visitor) human).getCity();
+        if (human instanceof Visitor) additional = " из города " + ((Visitor) human).getLocation();
         System.out.println("Вечер ещё не наступил, но все Персонажи " + getName() + " ждали Персонажей " +
                 human.getName() + additional + ".");
     }
