@@ -15,7 +15,7 @@ public class Orchestra implements ThingInterface {
             throw new IllegalArgumentException("Аргумент не может быть null");
         }
         this.participants = new ArrayList<>(Arrays.asList(participants));
-        this.uniqueParticipants = new HashSet<>(this.participants);
+        this.uniqueParticipants = new LinkedHashSet<>(this.participants);
     }
 
     public int getNumberOfParticipants() {

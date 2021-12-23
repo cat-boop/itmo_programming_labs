@@ -9,6 +9,7 @@ public class Baby extends Human implements Musician {
     private MusicalInstrument musicalInstrument;
     private final int height;
     private boolean stayingOnLadder;
+    public static boolean isMeeting = false;
 
     public Baby(String name, int height, MusicalInstrument musicalInstrument) {
         this(name, height, false, musicalInstrument);
@@ -16,7 +17,7 @@ public class Baby extends Human implements Musician {
 
     public Baby(String name, int height, boolean stayingOnLadder, MusicalInstrument musicalInstrument) {
         super(name);
-        if (name == null || musicalInstrument == null) {
+        if (musicalInstrument == null) {
             throw new IllegalArgumentException("Аргумент не может быть null");
         }
         if (musicalInstrument.getInstrumentSize() == InstrumentSize.HUGE &&
@@ -26,6 +27,10 @@ public class Baby extends Human implements Musician {
         this.height = height;
         this.stayingOnLadder = stayingOnLadder;
         this.musicalInstrument = musicalInstrument;
+    }
+
+    public static void startMeeting() {
+        isMeeting = true;
     }
 
     @Override

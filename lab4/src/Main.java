@@ -40,10 +40,10 @@ public class Main {
 
         orchestra.join();
 
-        Citizen citizen = new Citizen("Жители");
+        Citizen citizen = new Citizen("Жители", Location.PLATFORM);
         citizen.comeAndWaitFor(new Visitor("Гости", Location.ZMEEVKA));
 
-        Visitor firstVisitor = new Visitor("Гвоздик", Location.ZMEEVKA, MAIN_VISITOR_INVITATION);
+        Visitor firstVisitor = new Visitor("Гвоздик", Location.ZMEEVKA, true);
         Visitor.Outlook firstVisitorOutlook = firstVisitor.new Outlook(new Shirt(true), Appearance.WASHED, Appearance.COMBED);
         firstVisitor.setOutlook(firstVisitorOutlook);
 
@@ -64,5 +64,74 @@ public class Main {
             while (!otherVisitors.isInvited()) otherVisitors.sayThanksTo(Location.PROM, babies);
             otherVisitors.comeTo(Location.PROM);
         }
+
+        class Dunno extends Human {
+            private Location location;
+            private Action action;
+            private boolean isSitting, isResting, isSleeping;
+
+            public Dunno(String name, Location location) {
+                super(name);
+                this.location = location;
+                System.out.println("Персонаж " + getName() + " находится по местоположению " + location);
+            }
+
+            public void analyzeAction() {
+                Action firstActionNotDoing, secondActionNotDoing, actionDoing;
+                if (isSitting) {
+                    actionDoing = Action.SITTING;
+                    firstActionNotDoing = Action.RESTING;
+                    secondActionNotDoing = Action.SLEEPING;
+                } else if (isResting) {
+                    actionDoing = Action.RESTING;
+                    firstActionNotDoing = Action.SITTING;
+                    secondActionNotDoing = Action.SLEEPING;
+                } else {
+                    actionDoing = Action.SLEEPING;
+                    firstActionNotDoing = Action.RESTING;
+                    secondActionNotDoing = Action.SITTING;
+                }
+                System.out.println("Персонаж " + getName() + " не то чтобы делал " + firstActionNotDoing + " и "
+                        + secondActionNotDoing + ", сколько делал " + actionDoing);
+            }
+
+            public void appear() {
+                if (Baby.isMeeting) {
+                    location = Location.PLATFORM;
+                    System.out.println("Персонаж " + getName() + " закончил " + action +
+                            " и пошел к Местопожению \"" + location + "\"");
+                } else {
+                    System.out.println("Персонаж " + getName() + "продолжил " + action + "");
+                }
+            }
+
+            public void setSitting() {
+                action = Action.SITTING;
+                isSitting = true;
+                isResting = false;
+                isSleeping = false;
+            }
+
+            public void setResting() {
+                action = Action.RESTING;
+                isResting = true;
+                isSitting = false;
+                isSleeping = false;
+            }
+
+            public void setSleeping() {
+                action = Action.SLEEPING;
+                isSleeping = true;
+                isSitting = false;
+                isResting = false;
+            }
+        }
+
+        Dunno dunno = new Dunno("Незнайка", Location.DANDELION);
+        dunno.setSleeping();
+
+        dunno.analyzeAction();
+        Baby.startMeeting();
+        dunno.appear();
     }
 }

@@ -1,22 +1,25 @@
 package Characters;
 
+import Enums.Location;
+
 public class Citizen extends Human {
-    public Citizen(String name) {
+    private Location location;
+
+    public Citizen(String name, Location location) {
         super(name);
-        if (name == null) {
+        if (location == null) {
             throw new IllegalArgumentException("Аргумент не может быть null");
         }
+        this.location = location;
     }
 
     public void comeAndWaitFor(Human human) {
-        HumanAnalyzerInterface humanAnalyzer = new HumanAnalyzerInterface() {
-            @Override
-            public String analyzeHuman(Human human) {
-                String additional = "";
-                if (human instanceof Visitor) additional = " из города " + ((Visitor) human).getLocation();
-                return "Вечер ещё не наступил, но все Персонажи " + getName() + " ждали Персонажей " +
-                        human.getName() + additional + ".";
-            }
+        HumanAnalyzerInterface humanAnalyzer = (humanToAnalyze) -> {
+            String additional = "";
+            if (humanToAnalyze instanceof Visitor) additional = " из города " + ((Visitor) humanToAnalyze).getLocation();
+            return "Вечер ещё не наступил, но все Персонажи " + getName() + " находились по местоположению " +
+                    location + " и ждали Персонажей " +
+                    humanToAnalyze.getName() + additional + ".";
         };
         System.out.println(humanAnalyzer.analyzeHuman(human));
     }

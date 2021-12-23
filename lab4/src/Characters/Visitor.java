@@ -2,13 +2,9 @@ package Characters;
 
 import Enums.Appearance;
 import Enums.Location;
-import Exceptions.IllegalFloorException;
 import Things.Shirt;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 public class Visitor extends Human {
     private Location location;
@@ -40,12 +36,12 @@ public class Visitor extends Human {
 
         private void analyzeOutlook() {
             System.out.print("Внешний вид персонажа: ");
-            if (appearances == null && shirt == null) System.out.print("Ничем не примечательный");
+            if ((appearances == null || appearances.length == 0) && shirt == null) System.out.print("Ничем не примечательный");
             else {
                 if (shirt != null) {
                     System.out.print(shirt.getCharacteristic() + "; ");
                 }
-                if (appearances != null) {
+                if (appearances != null && appearances.length != 0) {
                     for (Appearance appearance : appearances) System.out.print(appearance + "; ");
                 }
             }
@@ -76,7 +72,7 @@ public class Visitor extends Human {
 
     public Visitor(String name, Location location, boolean wasInvited, Visitor... comeAfter) {
         super(name);
-        if (name == null || location == null) {
+        if (location == null || comeAfter == null) {
             throw new IllegalArgumentException("Аргумент не может быть null");
         }
         this.location = location;
