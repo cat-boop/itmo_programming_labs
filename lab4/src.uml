@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>C:/Users/sushe/Desktop/Лабораторные/Программирование/lab4/src</OriginalElement>
+  <nodes>
+    <node x="1061.1517857142858" y="567.0">Characters.Baby</node>
+    <node x="20.5" y="622.5">Things.Alcove.Floor</node>
+    <node x="-250.40178571428578" y="790.931240657698">Enums.Action</node>
+    <node x="214.5" y="501.0">Characters.Visitor</node>
+    <node x="687.5267857142857" y="106.0">Music.Orchestra</node>
+    <node x="506.5" y="622.5">Characters.Citizen</node>
+    <node x="-269.9017857142858" y="150.0">Enums.Decoration</node>
+    <node x="-255.90178571428578" y="501.0">Enums.Location</node>
+    <node x="248.5" y="962.0">Characters.Visitor.Outlook</node>
+    <node x="295.90178571428567" y="183.5">Things.Shirt</node>
+    <node x="1545.5267857142858" y="198.7750373692078">Music.InstrumentSize</node>
+    <node x="-15.45089285714289" y="962.0000000000001">Enums.Appearance</node>
+    <node x="0.0" y="150.0">Things.Alcove</node>
+    <node x="508.52678571428567" y="227.5">Characters.Human</node>
+    <node x="906.5" y="962.0">Exceptions.IllegalFloorException</node>
+    <node x="937.5267857142857" y="172.5">Music.MusicalInstrument</node>
+    <node x="1265.5267857142858" y="216.50000000000003">Music.Musician</node>
+    <node x="543.5" y="0.0">Things.ThingInterface</node>
+    <node x="506.5" y="962.0">Exceptions.InstrumentNotAllowedForMusicianException</node>
+    <node x="742.5" y="622.5">Characters.HumanAnalyzerInterface</node>
+    <node x="1183.5" y="984.0">Main</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="Characters.Citizen" target="Characters.Human" relationship="GENERALIZATION">
+      <point x="0.0" y="-84.0" />
+      <point x="614.5" y="476.0" />
+      <point x="588.0267857142857" y="476.0" />
+      <point x="0.0" y="51.0" />
+    </edge>
+    <edge source="Music.MusicalInstrument" target="Things.ThingInterface" relationship="REALIZATION">
+      <point x="0.0" y="-106.0" />
+      <point x="1091.5267857142858" y="81.0" />
+      <point x="614.5" y="81.0" />
+      <point x="0.0" y="28.0" />
+    </edge>
+    <edge source="Things.Shirt" target="Things.ThingInterface" relationship="REALIZATION">
+      <point x="0.0" y="-95.0" />
+      <point x="382.90178571428567" y="81.0" />
+      <point x="614.5" y="81.0" />
+      <point x="0.0" y="28.0" />
+    </edge>
+    <edge source="Things.Alcove" target="Things.ThingInterface" relationship="REALIZATION">
+      <point x="0.0" y="-128.5" />
+      <point x="107.5" y="81.0" />
+      <point x="614.5" y="81.0" />
+      <point x="0.0" y="28.0" />
+    </edge>
+    <edge source="Characters.Baby" target="Music.Musician" relationship="REALIZATION">
+      <point x="72.0" y="-139.5" />
+      <point x="1277.1517857142858" y="476.0" />
+      <point x="1395.5267857142858" y="476.0" />
+      <point x="0.0" y="84.0" />
+    </edge>
+    <edge source="Characters.Human" target="Things.ThingInterface" relationship="REALIZATION">
+      <point x="0.0" y="-51.0" />
+      <point x="588.0267857142857" y="81.0" />
+      <point x="614.5" y="81.0" />
+      <point x="0.0" y="28.0" />
+    </edge>
+    <edge source="Things.Alcove.Floor" target="Things.Alcove" relationship="INNER_CLASS">
+      <point x="0.0" y="-84.0" />
+      <point x="0.0" y="128.5" />
+    </edge>
+    <edge source="Music.Orchestra" target="Things.ThingInterface" relationship="REALIZATION">
+      <point x="0.0" y="-172.5" />
+      <point x="802.5267857142857" y="81.0" />
+      <point x="614.5" y="81.0" />
+      <point x="0.0" y="28.0" />
+    </edge>
+    <edge source="Characters.Visitor" target="Characters.Human" relationship="GENERALIZATION">
+      <point x="0.0" y="-205.5" />
+      <point x="350.5" y="476.0" />
+      <point x="588.0267857142857" y="476.0" />
+      <point x="0.0" y="51.0" />
+    </edge>
+    <edge source="Characters.Visitor.Outlook" target="Characters.Visitor" relationship="INNER_CLASS">
+      <point x="0.0" y="-95.0" />
+      <point x="0.0" y="205.5" />
+    </edge>
+    <edge source="Characters.Baby" target="Characters.Human" relationship="GENERALIZATION">
+      <point x="-72.0" y="-139.5" />
+      <point x="1133.1517857142858" y="476.0" />
+      <point x="588.0267857142857" y="476.0" />
+      <point x="0.0" y="51.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.5708191126279863" showDependencies="false" x="741.4999999999999" y="576.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Inner Classes</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
