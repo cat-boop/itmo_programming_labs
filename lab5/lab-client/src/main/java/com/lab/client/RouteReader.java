@@ -5,22 +5,68 @@ import com.lab.client.Data.Location;
 import com.lab.client.Data.Route;
 
 import java.util.Locale;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class RouteReader {
-    private final Scanner scanner;
+    private Scanner scanner;
 
     public RouteReader(Scanner scanner) {
         this.scanner = scanner;
+    }
+
+    public void setScanner(Scanner scanner) {
+        this.scanner = scanner;
+    }
+
+    public Scanner getScanner() {
+        return scanner;
     }
 
     public Route readRouteFromConsole() {
         return new Route(readName(), readCoordinates(), readFrom(), readTo(), readDistance());
     }
 
-    //public Route readRouteFromScript() {
-
-    //}
+    public Route readRouteFromScript() {
+        String name;
+        Coordinates coordinates;
+        Location from;
+        Location to;
+        double distance;
+        try {
+            name = scanner.nextLine();
+            if (name.isEmpty()) {
+                throw new NullPointerException();
+            }
+            int x = Integer.parseInt(scanner.nextLine());
+            long yl = Long.parseLong(scanner.nextLine());
+            coordinates = new Coordinates(x, yl);
+            x = Integer.parseInt(scanner.nextLine());
+            int y = Integer.parseInt(scanner.nextLine());
+            double z = Double.parseDouble(scanner.nextLine());
+            name = scanner.nextLine();
+            if (name.isEmpty()) {
+                throw new NullPointerException();
+            }
+            from = new Location(x, y, z, name);
+            x = Integer.parseInt(scanner.nextLine());
+            y = Integer.parseInt(scanner.nextLine());
+            z = Double.parseDouble(scanner.nextLine());
+            name = scanner.nextLine();
+            if (name.isEmpty()) {
+                throw new NullPointerException();
+            }
+            to = new Location(x, y, z, name);
+            distance = Double.parseDouble(scanner.nextLine());
+            if (Double.compare(distance, 1) <= 0) {
+                throw new NullPointerException();
+            }
+        } catch (NumberFormatException | NoSuchElementException | NullPointerException e) {
+            System.out.println("Ошибка при чтении элемента из скрипта. Проверьте правильность данных");
+            return null;
+        }
+        return new Route(name, coordinates, from, to, distance);
+    }
 
     public String readName() {
         System.out.print("Введите название маршрута: ");

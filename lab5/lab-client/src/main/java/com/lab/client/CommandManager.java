@@ -4,10 +4,11 @@ import com.lab.client.Data.Route;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.Scanner;
+
 
 public class CommandManager {
     private final Map<String, String> map;
@@ -62,7 +63,11 @@ public class CommandManager {
     }
 
     public void add() {
-        boolean success = collectionManager.add(routeReader.readRouteFromConsole());
+        Route route = getRoute();
+        if (route == null) {
+            return;
+        }
+        boolean success = collectionManager.add(route);
         if (!success) {
             System.out.println("Ошибка при добавлении элемента. Возможно, такой элемент уже существует.");
         }
@@ -72,7 +77,11 @@ public class CommandManager {
         try {
             long id = Long.parseLong(argument);
             if (collectionManager.existElementWithId(id)) {
-                collectionManager.updateById(id, routeReader.readRouteFromConsole());
+                Route route = getRoute();
+                if (route == null) {
+                    return;
+                }
+                collectionManager.updateById(id, route);
                 System.out.println("Элемент успешно обновлён.");
             } else {
                 System.out.println("Элемента с таким id не существует.");
@@ -106,18 +115,29 @@ public class CommandManager {
     }
 
     public void executeScript(String scriptName) {
+        Scanner scannerToScript = FileManager.getScannerToScript(scriptName);
+        if (scannerToScript == null) {
+            return;
+        }
+        Scanner consoleScanner = routeReader.getScanner();
+        routeReader.setScanner(scannerToScript);
         this.isScriptExecuting = true;
-        ArrayList<String> listOfCommands = FileManager.readScript(scriptName);
-        for (String inputCommand : listOfCommands) {
+        while (scannerToScript.hasNext()) {
+            String inputCommand = scannerToScript.nextLine();
             System.out.println("Исполнение команды \"" + inputCommand + "\"");
             executeCommand(inputCommand, this);
         }
         System.out.println("Исполнение скрипта завершено");
+        routeReader.setScanner(consoleScanner);
         this.isScriptExecuting = false;
     }
 
     public void addIfMin() {
-        boolean success = collectionManager.addIfMin(routeReader.readRouteFromConsole());
+        Route route = getRoute();
+        if (route == null) {
+            return;
+        }
+        boolean success = collectionManager.addIfMin(route);
         if (success) {
             System.out.println("Элемент успешно добавлен.");
         } else {
@@ -161,6 +181,19 @@ public class CommandManager {
         }
     }
 
+    public Route getRoute() {
+        if (isScriptExecuting) {
+            System.out.println("Попытка чтения элемента из скрипта");
+            Route route = routeReader.readRouteFromScript();
+            if (route != null) {
+                System.out.println("Элемент успешно считан");
+            }
+            return route;
+        } else {
+            return routeReader.readRouteFromConsole();
+        }
+    }
+
     public static void executeCommand(String inputCommand, CommandManager commandManager) {
         String[] inputLineDivided = inputCommand.trim().split(" ", 2);
         String command = inputCommandToJavaStyle(inputLineDivided[0].toLowerCase());
@@ -177,7 +210,7 @@ public class CommandManager {
         } catch (NoSuchMethodException e) {
             System.out.println("Такой команды не существует");
         } catch (IllegalAccessException | InvocationTargetException e) {
-            System.out.println("Что-то очень плохое (CommandManager 181)");
+            System.out.println("Что-то очень плохое (CommandManager class executeScript method)");
         }
     }
 

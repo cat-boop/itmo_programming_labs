@@ -25,6 +25,7 @@ public final class RouteValidator {
         boolean isFromRight;
         boolean isToRight;
         boolean isDistanceRight;
+        long maxId = 0;
         for (int i = 0; i < routes.length; i++) {
             printIfError = "Элемент " + (i + 1) + ": ";
             Route currentRoute = routes[i];
@@ -39,7 +40,11 @@ public final class RouteValidator {
             if (!isIdRight || !isNameRight || !isCoordinatesRight || !isCreationDateRight || !isFromRight || !isToRight || !isDistanceRight) {
                 flag = false;
             }
+            if (isIdRight) {
+                maxId = Math.max(maxId, currentRoute.getId());
+            }
         }
+        Route.setNextId(maxId + 1);
         return flag;
     }
 

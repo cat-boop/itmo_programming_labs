@@ -18,7 +18,7 @@ import java.util.TreeSet;
 import java.util.ArrayList;
 
 public final class FileManager {
-    private String fileName;
+    private final String fileName;
 
     public FileManager(String fileName) {
         this.fileName = fileName;
@@ -45,21 +45,17 @@ public final class FileManager {
         }
     }
 
-    public static ArrayList<String> readScript(String scriptName) {
+    public static Scanner getScannerToScript(String scriptName) {
         File file = new File(scriptName);
-        ArrayList<String> arrayList = new ArrayList<>();
         if (file.exists() && !file.canRead()) {
             System.out.println("Нет прав для чтения скрипта");
-            return arrayList;
+            return null;
         }
         try {
-            Scanner scanner = new Scanner(file);
-            while (scanner.hasNext()) {
-                arrayList.add(scanner.nextLine());
-            }
+            return new Scanner(file);
         } catch (FileNotFoundException e) {
             System.out.println("Скрипта с таким именем не существует, проверьте правильность названия.");
+            return null;
         }
-        return arrayList;
     }
 }

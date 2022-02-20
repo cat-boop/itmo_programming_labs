@@ -22,6 +22,10 @@ public class Route {
         this.distance = distance;
     }
 
+    public static void setNextId(Long id) {
+        nextId = id;
+    }
+
     public Long getId() {
         return id;
     }
