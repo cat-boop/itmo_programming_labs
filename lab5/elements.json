@@ -1,0 +1,40 @@
+[
+  {
+    "id": 0,
+    "name": "Tour_de_france",
+    "coordinates": {
+      "x": 412,
+      "y": 23
+    },
+    "creationDate": "2022-02-20T14:24:03.5785135",
+    "from": {
+      "x": 5,
+      "y": 8,
+      "z": 1.2,
+      "name": "Paris"
+    },
+    "distance": 1.2
+  },
+  {
+    "id": 1,
+    "name": "Pitdsfand",
+    "coordinates": {
+      "x": 74,
+      "y": 16
+    },
+    "creationDate": "2022-02-11T20:37:36.188098",
+    "from": {
+      "x": 7,
+      "y": 88,
+      "z": 9.0,
+      "name": "Piter"
+    },
+    "to": {
+      "x": 1,
+      "y": 2,
+      "z": 3.0,
+      "name": "Finland"
+    },
+    "distance": 2.3456543
+  }
+]
