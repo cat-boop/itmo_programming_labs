@@ -1,4 +1,4 @@
-package com.lab.client;
+package com.lab.client.Utility;
 
 import com.lab.client.Data.Coordinates;
 import com.lab.client.Data.Location;
@@ -8,6 +8,10 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Utility class that validate Route
+ * This class should not be instantiated
+ */
 public final class RouteValidator {
     private static String printIfError;
     private static final Set<Long> ID_SET = new HashSet<>();
@@ -16,6 +20,10 @@ public final class RouteValidator {
         throw new UnsupportedOperationException("This class should not be instantiated");
     }
 
+    /**
+     * @param routes input routes that should be validated
+     * @return true if all input routes are correct, else return false
+     */
     public static boolean validateRoutes(Route[] routes) {
         boolean flag = true;
         boolean isIdRight;

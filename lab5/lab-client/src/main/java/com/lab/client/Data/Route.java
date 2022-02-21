@@ -2,6 +2,9 @@ package com.lab.client.Data;
 
 import java.time.LocalDateTime;
 
+/**
+ * Main class that stored in collection
+ */
 public class Route {
     private static Long nextId = 0L;
     private final Long id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
@@ -26,34 +29,59 @@ public class Route {
         nextId = id;
     }
 
+    /**
+     * @return id of Route
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     * @return name of Route
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @return coordinates of Route
+     */
     public Coordinates getCoordinates() {
         return coordinates;
     }
 
+    /**
+     * @return creation date of Route
+     */
     public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
+    /**
+     * @return location where Route starts
+     */
     public Location getFrom() {
         return from;
     }
 
+    /**
+     * @return location where Route ends
+     */
     public Location getTo() {
         return to;
     }
 
+    /**
+     * @return distance of Route
+     */
     public double getDistance() {
         return distance;
     }
 
+    /**
+     * replace current route by new information
+     * @param route route with new information
+     */
     public void update(Route route) {
         name = route.name;
         coordinates = route.coordinates;
@@ -62,6 +90,9 @@ public class Route {
         distance = route.distance;
     }
 
+    /**
+     * @return route represented by beautiful string
+     */
     @Override
     public String toString() {
         return "Id = " + id + ", name = \"" + name + "\", coordinates = " + coordinates + ", creation date = "

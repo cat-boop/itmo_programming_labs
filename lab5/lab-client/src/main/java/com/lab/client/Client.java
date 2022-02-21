@@ -1,5 +1,11 @@
 package com.lab.client;
 
+import com.lab.client.MainClasses.Console;
+
+/**
+ * Main class that start interactive mode
+ * @author Sushenko Roman P3115
+ */
 public final class Client {
     private Client() {
         throw new UnsupportedOperationException("This is an utility class and can not be instantiated");

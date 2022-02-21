@@ -1,7 +1,12 @@
-package com.lab.client;
+package com.lab.client.MainClasses;
+
+import com.lab.client.Utility.RouteReader;
 
 import java.util.Scanner;
 
+/**
+ * Class that start interactive mode and operates user command
+ */
 public class Console {
     private final CommandManager commandManager;
     private final Scanner scanner;
@@ -14,6 +19,9 @@ public class Console {
         this.commandManager = new CommandManager(fileManager, routeReader);
     }
 
+    /**
+     * start reading and operates user command until end
+     */
     public void startInteractiveMode() {
         System.out.println("Добро пожаловать.");
         System.out.println("Доступные команды: [info, show, add, update, remove_by_id, clear, save, execute_script, exit, add_if_min, remove_greater, remove_lower, max_by_distance, count_less_than_distance, count_greater_than_distance]");

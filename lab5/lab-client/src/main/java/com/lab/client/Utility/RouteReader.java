@@ -1,4 +1,4 @@
-package com.lab.client;
+package com.lab.client.Utility;
 
 import com.lab.client.Data.Coordinates;
 import com.lab.client.Data.Location;
@@ -8,6 +8,9 @@ import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+/**
+ * Class that read new Route from console or from script
+ */
 public class RouteReader {
     private Scanner scanner;
 
@@ -15,18 +18,30 @@ public class RouteReader {
         this.scanner = scanner;
     }
 
+    /**
+     * @param scanner new scanner
+     */
     public void setScanner(Scanner scanner) {
         this.scanner = scanner;
     }
 
+    /**
+     * @return return current scanner
+     */
     public Scanner getScanner() {
         return scanner;
     }
 
+    /**
+     * @return new Route read from console
+     */
     public Route readRouteFromConsole() {
         return new Route(readName(), readCoordinates(), readFrom(), readTo(), readDistance());
     }
 
+    /**
+     * @return new Route read from script
+     */
     public Route readRouteFromScript() {
         String name;
         Coordinates coordinates;
@@ -68,6 +83,9 @@ public class RouteReader {
         return new Route(name, coordinates, from, to, distance);
     }
 
+    /**
+     * @return read name of Route from console
+     */
     public String readName() {
         System.out.print("Введите название маршрута: ");
         String name = scanner.nextLine();
@@ -78,6 +96,9 @@ public class RouteReader {
         return name;
     }
 
+    /**
+     * @return read coordinates of Route from console
+     */
     public Coordinates readCoordinates() {
         final int xMaxValue = 412;
         int x;
@@ -93,6 +114,9 @@ public class RouteReader {
         return new Coordinates(x, y);
     }
 
+    /**
+     * @return read start location of Route from console
+     */
     public Location readFrom() {
         System.out.print("Введите координату X точки начала маршрута: ");
         int x = readInt();
@@ -109,6 +133,9 @@ public class RouteReader {
         return new Location(x, y, z, name);
     }
 
+    /**
+     * @return read end location of Route from console
+     */
     public Location readTo() {
         String response;
         while (true) {
@@ -134,6 +161,9 @@ public class RouteReader {
         }
     }
 
+    /**
+     * @return read distance of Route from console
+     */
     public double readDistance() {
         System.out.print("Введите дистанцию маршрута: ");
         double value = readDouble();
@@ -144,7 +174,7 @@ public class RouteReader {
         return value;
     }
 
-    public int readInt() {
+    private int readInt() {
         int value;
         while (true) {
             try {
@@ -157,7 +187,7 @@ public class RouteReader {
         return value;
     }
 
-    public long readLong() {
+    private long readLong() {
         long value;
         while (true) {
             try {
@@ -170,7 +200,7 @@ public class RouteReader {
         return value;
     }
 
-    public double readDouble() {
+    private double readDouble() {
         double value;
         while (true) {
             try {

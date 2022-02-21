@@ -1,10 +1,11 @@
-package com.lab.client;
+package com.lab.client.MainClasses;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializer;
 import com.lab.client.Data.Route;
+import com.lab.client.Utility.JsonParser;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,13 +18,20 @@ import java.util.Scanner;
 import java.util.TreeSet;
 import java.util.ArrayList;
 
-public final class FileManager {
+/**
+ * Class that operates all files
+ */
+public class FileManager {
     private final String fileName;
 
     public FileManager(String fileName) {
         this.fileName = fileName;
     }
 
+    /**
+     * reads and return route from json file using JsonParser utility class
+     * @return list of routes from file
+     */
     public ArrayList<Route> readFromFile() {
         File file = new File(fileName);
         if (file.exists() && !file.canRead()) {
@@ -34,6 +42,10 @@ public final class FileManager {
         }
     }
 
+    /**
+     * save collection to json file
+     * @param treeSet collection to save
+     */
     public void saveToFile(TreeSet<Route> treeSet) {
         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, (JsonSerializer<LocalDateTime>) (date, type, jsonSerializationContext) -> new JsonPrimitive(date.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))).setPrettyPrinting().create();
         try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(fileName))) {
@@ -45,6 +57,9 @@ public final class FileManager {
         }
     }
 
+    /**
+     * @return scanner for script
+     */
     public static Scanner getScannerToScript(String scriptName) {
         File file = new File(scriptName);
         if (file.exists() && !file.canRead()) {

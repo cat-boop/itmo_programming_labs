@@ -1,5 +1,8 @@
 package com.lab.client.Data;
 
+/**
+ * Coordinates of Route represented by x, y coordinates
+ */
 public class Coordinates {
     private int x; //Максимальное значение поля: 412
     private Long y; //Поле не может быть null
@@ -9,14 +12,23 @@ public class Coordinates {
         this.y = y;
     }
 
+    /**
+     * @return x coordinate
+     */
     public int getX() {
         return x;
     }
 
+    /**
+     * @return y coordinate
+     */
     public Long getY() {
         return y;
     }
 
+    /**
+     * @return coordinates represented by beautiful string
+     */
     @Override
     public String toString() {
         return "{" + x + ", " + y + "}";

@@ -1,4 +1,4 @@
-package com.lab.client;
+package com.lab.client.Utility;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -14,12 +14,21 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Arrays;
 
+/**
+ * Utility class that parse json file to list of elements
+ * This class should not be instantiated
+ */
 public final class JsonParser {
 
     private JsonParser() {
         throw new UnsupportedOperationException("This class should not be instantiated");
     }
 
+    /**
+     * analyze Json file for error and parse it to list of Routes
+     * @param file file that contains array of elements
+     * @return empty array if file contains error or list of Routes
+     */
     public static ArrayList<Route> parseJson(File file) {
         StringBuilder inputArray = new StringBuilder();
         ArrayList<Route> arrayList = new ArrayList<>();

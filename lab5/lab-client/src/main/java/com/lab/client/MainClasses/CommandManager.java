@@ -1,6 +1,7 @@
-package com.lab.client;
+package com.lab.client.MainClasses;
 
 import com.lab.client.Data.Route;
+import com.lab.client.Utility.RouteReader;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -9,7 +10,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-
+/**
+ * Class that execute user commands
+ */
 public class CommandManager {
     private final Map<String, String> map;
     private final CollectionManager collectionManager;
@@ -42,26 +45,42 @@ public class CommandManager {
         map.put("count_greater_than_distance", "Выводит количество элементов, значение поля distance которых больше заданного");
     }
 
+    /**
+     * prints supporting information
+     */
     public void help() {
         System.out.println(map.get("help"));
     }
 
+    /**
+     * prints info about command
+     * @param command
+     */
     public void info(String command) {
         System.out.println(map.getOrDefault(command, "Такой команды не существует."));
     }
 
+    /**
+     * prints info about collection
+     */
     public void info() {
         System.out.println("Тип коллекции - " + collectionManager.getCollectionName());
         System.out.println("Количество элементов - " + collectionManager.getSize());
         System.out.println("Дата инициализации - " + collectionManager.getCreationDate());
     }
 
+    /**
+     * prints all elements of collection
+     */
     public void show() {
         for (Route route : collectionManager.getTreeSet()) {
             System.out.println(route);
         }
     }
 
+    /**
+     * add new route to collection
+     */
     public void add() {
         Route route = getRoute();
         if (route == null) {
@@ -73,6 +92,10 @@ public class CommandManager {
         }
     }
 
+    /**
+     * update a route in collection
+     * @param argument user-entered argument, which should be a long number
+     */
     public void update(String argument) {
         try {
             long id = Long.parseLong(argument);
@@ -91,6 +114,10 @@ public class CommandManager {
         }
     }
 
+    /**
+     * remove route from collection
+     * @param argument user-entered argument, which should be a long number
+     */
     public void removeById(String argument) {
         try {
             long id = Long.parseLong(argument);
@@ -105,15 +132,24 @@ public class CommandManager {
         }
     }
 
+    /**
+     * remove all element from collection
+     */
     public void clear() {
         collectionManager.clear();
         System.out.println("Коллекция успешно очищена.");
     }
 
+    /**
+     * save collection to file
+     */
     public void save() {
         fileManager.saveToFile(collectionManager.getTreeSet());
     }
 
+    /**
+     * script contains commands in the same format as the user enters them, method execute commands from script
+     */
     public void executeScript(String scriptName) {
         Scanner scannerToScript = FileManager.getScannerToScript(scriptName);
         if (scannerToScript == null) {
@@ -132,6 +168,9 @@ public class CommandManager {
         this.isScriptExecuting = false;
     }
 
+    /**
+     * add route entered by user to collection if it's lower than the minimal route in collection
+     */
     public void addIfMin() {
         Route route = getRoute();
         if (route == null) {
@@ -145,14 +184,31 @@ public class CommandManager {
         }
     }
 
+    /**
+     * remove all routes in collection that greater than route entered by user
+     */
     public void removeGreater() {
-        collectionManager.removeGreater(routeReader.readRouteFromConsole());
+        Route route = getRoute();
+        if (route == null) {
+            return;
+        }
+        collectionManager.removeGreater(route);
     }
 
+    /**
+     * remove all routes in collection that lower than route entered by user
+     */
     public void removeLower() {
-        collectionManager.removeLower(routeReader.readRouteFromConsole());
+        Route route = getRoute();
+        if (route == null) {
+            return;
+        }
+        collectionManager.removeLower(route);
     }
 
+    /**
+     * print route from collection which distance is maximum
+     */
     public void maxByDistance() {
         try {
             System.out.println(collectionManager.maxByDistance());
@@ -161,6 +217,10 @@ public class CommandManager {
         }
     }
 
+    /**
+     * prints number of routes from collection which distance less than the user-entered distance
+     * @param argument user-entered argument, which should be a double number
+     */
     public void countLessThanDistance(String argument) {
         try {
             double distance = Double.parseDouble(argument);
@@ -171,6 +231,10 @@ public class CommandManager {
         }
     }
 
+    /**
+     * prints number of routes from collection which distance greater than the user-entered distance
+     * @param argument user-entered argument, which should be a double number
+     */
     public void countGreaterThanDistance(String argument) {
         try {
             double distance = Double.parseDouble(argument);
@@ -181,6 +245,10 @@ public class CommandManager {
         }
     }
 
+    /**
+     * method which get new route from console or from script
+     * @return null only if script executing and script contains error, else return new route
+     */
     public Route getRoute() {
         if (isScriptExecuting) {
             System.out.println("Попытка чтения элемента из скрипта");
@@ -194,6 +262,11 @@ public class CommandManager {
         }
     }
 
+    /**
+     * main method, that execute commands using Reflection API
+     * @param inputCommand command entered by user
+     * @param commandManager commandManager instance for Reflection
+     */
     public static void executeCommand(String inputCommand, CommandManager commandManager) {
         String[] inputLineDivided = inputCommand.trim().split(" ", 2);
         String command = inputCommandToJavaStyle(inputLineDivided[0].toLowerCase());
