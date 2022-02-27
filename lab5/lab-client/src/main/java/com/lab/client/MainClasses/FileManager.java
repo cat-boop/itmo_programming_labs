@@ -58,7 +58,7 @@ public class FileManager {
     }
 
     /**
-     * @return scanner for script
+     * @return scanner for script if script exist, else return null
      */
     public static Scanner getScannerToScript(String scriptName) {
         File file = new File(scriptName);
