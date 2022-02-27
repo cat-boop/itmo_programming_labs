@@ -5,16 +5,19 @@ import com.lab.client.Utility.RouteReader;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.NoSuchElementException;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.NoSuchElementException;
 
 /**
  * Class that execute user commands
  */
 public class CommandManager {
     private final Map<String, String> map;
+    private final Set<String> scriptNames;
     private final CollectionManager collectionManager;
     private final RouteReader routeReader;
     private final FileManager fileManager;
@@ -25,6 +28,7 @@ public class CommandManager {
         this.routeReader = routeReader;
         this.collectionManager = new CollectionManager(fileManager.readFromFile());
         this.isScriptExecuting = false;
+        scriptNames = new HashSet<>();
         map = new HashMap<>();
         map.put("help", "Доступные команды: [info, show, add, update, remove_by_id, clear, save, execute_script, exit, add_if_min, remove_greater, remove_lower, max_by_distance, count_less_than_distance, count_greater_than_distance]\n"
                 + "Если хотите узнать описание конкретной команды, введите info {название_команды}");
@@ -148,13 +152,26 @@ public class CommandManager {
     }
 
     /**
+     * print exit message and stops the program
+     */
+    public void exit() {
+        System.out.println("Исполнение программы успешно остановлено");
+    }
+
+    /**
      * script contains commands in the same format as the user enters them, method execute commands from script
      */
     public void executeScript(String scriptName) {
+        if (scriptNames.contains(scriptName)) {
+            System.out.println("Скрипты нельзя вызывать рекурсивно");
+            return;
+        }
+        scriptNames.add(scriptName);
         Scanner scannerToScript = FileManager.getScannerToScript(scriptName);
         if (scannerToScript == null) {
             return;
         }
+        System.out.println("Исполнение скрипта \"" + scriptName + "\"");
         Scanner consoleScanner = routeReader.getScanner();
         routeReader.setScanner(scannerToScript);
         this.isScriptExecuting = true;
@@ -163,7 +180,7 @@ public class CommandManager {
             System.out.println("Исполнение команды \"" + inputCommand + "\"");
             executeCommand(inputCommand, this);
         }
-        System.out.println("Исполнение скрипта завершено");
+        System.out.println("Исполнение скрипта \"" + scriptName + "\" завершено");
         routeReader.setScanner(consoleScanner);
         this.isScriptExecuting = false;
     }
