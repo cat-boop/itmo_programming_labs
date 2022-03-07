@@ -5,8 +5,6 @@ import com.lab.client.Utility.RouteReader;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Scanner;
@@ -16,52 +14,41 @@ import java.util.NoSuchElementException;
  * Class that execute user commands
  */
 public class CommandManager {
-    private final Map<String, String> map;
     private final Set<String> scriptNames;
     private final CollectionManager collectionManager;
     private final RouteReader routeReader;
     private final FileManager fileManager;
+    private final Method[] methods;
     private boolean isScriptExecuting;
 
-    public CommandManager(FileManager fileManager, RouteReader routeReader) {
+    public CommandManager(FileManager fileManager, RouteReader routeReader, CollectionManager collectionManager) {
         this.fileManager = fileManager;
         this.routeReader = routeReader;
-        this.collectionManager = new CollectionManager(fileManager.readFromFile());
+        this.collectionManager = collectionManager;
+        this.methods = CommandManager.class.getMethods();
         this.isScriptExecuting = false;
         scriptNames = new HashSet<>();
-        map = new HashMap<>();
-        map.put("help", "Доступные команды: [info, show, add, update, remove_by_id, clear, save, execute_script, exit, add_if_min, remove_greater, remove_lower, max_by_distance, count_less_than_distance, count_greater_than_distance]\n"
-                + "Если хотите узнать описание конкретной команды, введите info {название_команды}");
-        map.put("info", "Выводит информацию о коллекции");
-        map.put("show", "Выводит все элементы коллекции");
-        map.put("add", "Добавляет элемент в коллекцию");
-        map.put("update", "Обновляет значение элемента коллекции, id которого равен заданному");
-        map.put("remove_by_id", "Удаляет элемент из коллекции по его id");
-        map.put("clear", "Очищает коллекцию");
-        map.put("save", "Сохраняет коллекцию в файл");
-        map.put("execute_script", "Считывает и исполняет скрипт из указанного файла.\nВ скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме");
-        map.put("exit", "Завершает программу (без сохранения в файл");
-        map.put("add_if_min", "Добавляет новый элемент в коллекцию, если его значение меньше, чем у наименьшего элемента этой коллекции");
-        map.put("remove_greater", "Удаляет из коллекции все элементы, превышающие заданный");
-        map.put("remove_lower", "Удаляет из коллекции все элементы, меньшие, чем заданный");
-        map.put("max_by_distance", "Выводит объект коллекции, значение поля distance которого является максимальным");
-        map.put("count_less_than_distance", "Выводит количество элементов, значение поля distance которых меньше заданного");
-        map.put("count_greater_than_distance", "Выводит количество элементов, значение поля distance которых больше заданного");
     }
 
     /**
      * prints supporting information
      */
     public void help() {
-        System.out.println(map.get("help"));
-    }
-
-    /**
-     * prints info about command
-     * @param command
-     */
-    public void info(String command) {
-        System.out.println(map.getOrDefault(command, "Такой команды не существует."));
+        System.out.println("info: Выводит информацию о коллекции");
+        System.out.println("show: Выводит все элементы коллекции");
+        System.out.println("add: Добавляет элемент в коллекцию");
+        System.out.println("update: Обновляет значение элемента коллекции, id которого равен заданному");
+        System.out.println("remove_by_id: Удаляет элемент из коллекции по его id");
+        System.out.println("clear: Очищает коллекцию");
+        System.out.println("save: Сохраняет коллекцию в файл");
+        System.out.println("execute_script: Считывает и исполняет скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь");
+        System.out.println("add_if_min: Добавляет новый элемент в коллекцию, если его значение меньше, чем у наименьшего элемента этой коллекции");
+        System.out.println("remove_greater: Удаляет из коллекции все элементы, превышающие заданный");
+        System.out.println("remove_lower: Удаляет из коллекции все элементы, меньшие, чем заданный");
+        System.out.println("max_by_distance: Выводит объект коллекции, значение поля distance которого является максимальным");
+        System.out.println("count_less_than_distance: Выводит количество элементов, значение поля distance которых меньше заданного");
+        System.out.println("count_greater_than_distance: Выводит количество элементов, значение поля distance которых больше заданного");
+        System.out.println("exit: Завершает выполнение программы без сохранения в файл");
     }
 
     /**
@@ -77,7 +64,7 @@ public class CommandManager {
      * prints all elements of collection
      */
     public void show() {
-        for (Route route : collectionManager.getTreeSet()) {
+        for (Route route : collectionManager.getCollection()) {
             System.out.println(route);
         }
     }
@@ -86,11 +73,7 @@ public class CommandManager {
      * add new route to collection
      */
     public void add() {
-        Route route = getRoute();
-        if (route == null) {
-            return;
-        }
-        boolean success = collectionManager.add(route);
+        boolean success = collectionManager.add(getRoute());
         if (!success) {
             System.out.println("Ошибка при добавлении элемента. Возможно, такой элемент уже существует.");
         }
@@ -98,17 +81,14 @@ public class CommandManager {
 
     /**
      * update a route in collection
+     *
      * @param argument user-entered argument, which should be a long number
      */
     public void update(String argument) {
         try {
             long id = Long.parseLong(argument);
             if (collectionManager.existElementWithId(id)) {
-                Route route = getRoute();
-                if (route == null) {
-                    return;
-                }
-                collectionManager.updateById(id, route);
+                collectionManager.updateById(id, getRoute());
                 System.out.println("Элемент успешно обновлён.");
             } else {
                 System.out.println("Элемента с таким id не существует.");
@@ -120,6 +100,7 @@ public class CommandManager {
 
     /**
      * remove route from collection
+     *
      * @param argument user-entered argument, which should be a long number
      */
     public void removeById(String argument) {
@@ -148,14 +129,7 @@ public class CommandManager {
      * save collection to file
      */
     public void save() {
-        fileManager.saveToFile(collectionManager.getTreeSet());
-    }
-
-    /**
-     * print exit message and stops the program
-     */
-    public void exit() {
-        System.out.println("Исполнение программы успешно остановлено");
+        fileManager.saveToFile(collectionManager.getCollection());
     }
 
     /**
@@ -178,10 +152,11 @@ public class CommandManager {
         while (scannerToScript.hasNext()) {
             String inputCommand = scannerToScript.nextLine();
             System.out.println("Исполнение команды \"" + inputCommand + "\"");
-            executeCommand(inputCommand, this);
+            this.executeCommand(inputCommand);
         }
         System.out.println("Исполнение скрипта \"" + scriptName + "\" завершено");
         routeReader.setScanner(consoleScanner);
+        scriptNames.remove(scriptName);
         this.isScriptExecuting = false;
     }
 
@@ -189,11 +164,7 @@ public class CommandManager {
      * add route entered by user to collection if it's lower than the minimal route in collection
      */
     public void addIfMin() {
-        Route route = getRoute();
-        if (route == null) {
-            return;
-        }
-        boolean success = collectionManager.addIfMin(route);
+        boolean success = collectionManager.addIfMin(getRoute());
         if (success) {
             System.out.println("Элемент успешно добавлен.");
         } else {
@@ -205,22 +176,14 @@ public class CommandManager {
      * remove all routes in collection that greater than route entered by user
      */
     public void removeGreater() {
-        Route route = getRoute();
-        if (route == null) {
-            return;
-        }
-        collectionManager.removeGreater(route);
+        collectionManager.removeGreater(getRoute());
     }
 
     /**
      * remove all routes in collection that lower than route entered by user
      */
     public void removeLower() {
-        Route route = getRoute();
-        if (route == null) {
-            return;
-        }
-        collectionManager.removeLower(route);
+        collectionManager.removeLower(getRoute());
     }
 
     /**
@@ -236,6 +199,7 @@ public class CommandManager {
 
     /**
      * prints number of routes from collection which distance less than the user-entered distance
+     *
      * @param argument user-entered argument, which should be a double number
      */
     public void countLessThanDistance(String argument) {
@@ -250,6 +214,7 @@ public class CommandManager {
 
     /**
      * prints number of routes from collection which distance greater than the user-entered distance
+     *
      * @param argument user-entered argument, which should be a double number
      */
     public void countGreaterThanDistance(String argument) {
@@ -264,16 +229,14 @@ public class CommandManager {
 
     /**
      * method which get new route from console or from script
-     * @return null only if script executing and script contains error, else return new route
+     *
+     * @return new route read from script of from console
+     * @throws com.lab.client.Exceptions.ReadElementException if script contains error
      */
     public Route getRoute() {
         if (isScriptExecuting) {
             System.out.println("Попытка чтения элемента из скрипта");
-            Route route = routeReader.readRouteFromScript();
-            if (route != null) {
-                System.out.println("Элемент успешно считан");
-            }
-            return route;
+            return routeReader.readRouteFromScript();
         } else {
             return routeReader.readRouteFromConsole();
         }
@@ -282,26 +245,35 @@ public class CommandManager {
     /**
      * main method, that execute commands using Reflection API
      * @param inputCommand command entered by user
-     * @param commandManager commandManager instance for Reflection
      */
-    public static void executeCommand(String inputCommand, CommandManager commandManager) {
+    public boolean executeCommand(String inputCommand) {
         String[] inputLineDivided = inputCommand.trim().split(" ", 2);
         String command = inputCommandToJavaStyle(inputLineDivided[0].toLowerCase());
-        Class<CommandManager> commandManagerClass = CommandManager.class;
-        Method methodToInvoke;
+        if ("exit".equals(command)) {
+            return true;
+        }
         try {
+            Method methodToInvoke = null;
+            for (Method method : methods) {
+                if (method.getName().equals(command)) {
+                    methodToInvoke = method;
+                    break;
+                }
+            }
+            if (methodToInvoke == null) {
+                throw new NoSuchMethodException();
+            }
             if (inputLineDivided.length == 1) {
-                methodToInvoke = commandManagerClass.getMethod(command);
-                methodToInvoke.invoke(commandManager);
+                methodToInvoke.invoke(this);
             } else {
-                methodToInvoke = commandManagerClass.getMethod(command, String.class);
-                methodToInvoke.invoke(commandManager, inputLineDivided[1]);
+                methodToInvoke.invoke(this, inputLineDivided[1]);
             }
         } catch (NoSuchMethodException e) {
             System.out.println("Такой команды не существует");
         } catch (IllegalAccessException | InvocationTargetException e) {
             System.out.println("Что-то очень плохое (CommandManager class executeScript method)");
         }
+        return false;
     }
 
     private static String inputCommandToJavaStyle(String str) {
