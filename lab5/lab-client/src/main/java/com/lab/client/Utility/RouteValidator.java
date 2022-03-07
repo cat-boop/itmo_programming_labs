@@ -24,7 +24,7 @@ public final class RouteValidator {
      * @param routes input routes that should be validated
      * @return true if all input routes are correct, else return false
      */
-    public static boolean validateRoutes(Route[] routes) {
+    public static boolean validateRoutes(Route... routes) {
         boolean flag = true;
         boolean isIdRight;
         boolean isNameRight;

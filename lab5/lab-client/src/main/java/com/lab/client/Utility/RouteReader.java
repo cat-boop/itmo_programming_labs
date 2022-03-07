@@ -3,9 +3,9 @@ package com.lab.client.Utility;
 import com.lab.client.Data.Coordinates;
 import com.lab.client.Data.Location;
 import com.lab.client.Data.Route;
+import com.lab.client.Exceptions.ReadElementException;
 
 import java.util.Locale;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -43,44 +43,30 @@ public class RouteReader {
      * @return new Route read from script
      */
     public Route readRouteFromScript() {
-        String name;
-        Coordinates coordinates;
-        Location from;
-        Location to;
-        double distance;
         try {
-            name = scanner.nextLine();
-            if (name.isEmpty()) {
-                throw new NullPointerException();
-            }
-            int x = Integer.parseInt(scanner.nextLine());
-            long yl = Long.parseLong(scanner.nextLine());
-            coordinates = new Coordinates(x, yl);
-            x = Integer.parseInt(scanner.nextLine());
-            int y = Integer.parseInt(scanner.nextLine());
-            double z = Double.parseDouble(scanner.nextLine());
-            name = scanner.nextLine();
-            if (name.isEmpty()) {
-                throw new NullPointerException();
-            }
-            from = new Location(x, y, z, name);
-            x = Integer.parseInt(scanner.nextLine());
-            y = Integer.parseInt(scanner.nextLine());
-            z = Double.parseDouble(scanner.nextLine());
-            name = scanner.nextLine();
-            if (name.isEmpty()) {
-                throw new NullPointerException();
-            }
-            to = new Location(x, y, z, name);
-            distance = Double.parseDouble(scanner.nextLine());
-            if (Double.compare(distance, 1) <= 0) {
-                throw new NullPointerException();
-            }
-        } catch (NumberFormatException | NoSuchElementException | NullPointerException e) {
-            System.out.println("Ошибка при чтении элемента из скрипта. Проверьте правильность данных");
-            return null;
+            String routeName = scanner.nextLine();
+
+            int coordinatesX = Integer.parseInt(scanner.nextLine());
+            long coordinatesY = Long.parseLong(scanner.nextLine());
+
+            int fromX = Integer.parseInt(scanner.nextLine());
+            int fromY = Integer.parseInt(scanner.nextLine());
+            double fromZ = Double.parseDouble(scanner.nextLine());
+            String fromName = scanner.nextLine();
+
+            int toX = Integer.parseInt(scanner.nextLine());
+            int toY = Integer.parseInt(scanner.nextLine());
+            double toZ = Double.parseDouble(scanner.nextLine());
+            String toName = scanner.nextLine();
+
+            double distance = Double.parseDouble(scanner.nextLine());
+            Route route = new Route(routeName, new Coordinates(coordinatesX, coordinatesY),
+                    new Location(fromX, fromY, fromZ, fromName), new Location(toX, toY, toZ, toName), distance);
+            RouteValidator.validateRoutes(route);
+            return route;
+        } catch (Exception e) {
+            throw new ReadElementException("Ошибка при чтении элемента из скрипта. Проверьте правильность данных", e);
         }
-        return new Route(name, coordinates, from, to, distance);
     }
 
     /**

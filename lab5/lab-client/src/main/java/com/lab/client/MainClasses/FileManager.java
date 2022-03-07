@@ -4,8 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializer;
+import com.google.gson.JsonDeserializer;
 import com.lab.client.Data.Route;
-import com.lab.client.Utility.JsonParser;
+import com.lab.client.Utility.RouteValidator;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,9 +15,11 @@ import java.io.FileOutputStream;
 import java.io.BufferedOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Scanner;
-import java.util.TreeSet;
+import java.util.List;
+import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.Scanner;
 
 /**
  * Class that operates all files
@@ -30,26 +33,31 @@ public class FileManager {
 
     /**
      * reads and return route from json file using JsonParser utility class
+     *
      * @return list of routes from file
      */
-    public ArrayList<Route> readFromFile() {
-        File file = new File(fileName);
-        if (file.exists() && !file.canRead()) {
-            System.out.println("Нет прав для чтения файла");
-            return new ArrayList<>();
-        } else {
-            return JsonParser.parseJson(file);
+    public List<Route> readFromFile() throws FileNotFoundException {
+        StringBuilder inputArray = new StringBuilder();
+        Scanner scanner = new Scanner(new File(fileName));
+        while (scanner.hasNextLine()) {
+            String nextLine = scanner.nextLine();
+            inputArray.append(nextLine);
         }
+        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, (JsonDeserializer<LocalDateTime>) (json, type, jsonPrimitive) -> LocalDateTime.parse(json.getAsJsonPrimitive().getAsString())).create();
+        Route[] routes = gson.fromJson(inputArray.toString(), Route[].class);
+        RouteValidator.validateRoutes(routes);
+        return new ArrayList<>(Arrays.asList(routes));
     }
 
     /**
      * save collection to json file
-     * @param treeSet collection to save
+     *
+     * @param set collection to save
      */
-    public void saveToFile(TreeSet<Route> treeSet) {
+    public void saveToFile(Set<Route> set) {
         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, (JsonSerializer<LocalDateTime>) (date, type, jsonSerializationContext) -> new JsonPrimitive(date.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))).setPrettyPrinting().create();
         try (BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(fileName))) {
-            String toPrint = gson.toJson(treeSet);
+            String toPrint = gson.toJson(set);
             out.write(toPrint.getBytes());
             System.out.println("Коллекция успешно сохранена в файл");
         } catch (IOException e) {
