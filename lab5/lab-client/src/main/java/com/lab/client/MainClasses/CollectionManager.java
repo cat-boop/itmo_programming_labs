@@ -3,28 +3,29 @@ package com.lab.client.MainClasses;
 import com.lab.client.Data.Route;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
+import java.util.NavigableSet;
 import java.util.TreeSet;
 
 /**
  * Class that manage collection
  */
 public class CollectionManager {
-    private final TreeSet<Route> treeSet;
+    private final NavigableSet<Route> routes;
     private final java.time.LocalDateTime creationDate;
 
-    public CollectionManager(ArrayList<Route> arrayList) {
-        treeSet = new TreeSet<>(Comparator.comparing(Route::getDistance));
-        treeSet.addAll(arrayList);
+    public CollectionManager(List<Route> routes) {
+        this.routes = new TreeSet<>(Comparator.comparing(Route::getDistance));
+        this.routes.addAll(routes);
         creationDate = java.time.LocalDateTime.now();
     }
 
     /**
      * @return current collection
      */
-    public TreeSet<Route> getTreeSet() {
-        return new TreeSet<>(treeSet);
+    public NavigableSet<Route> getCollection() {
+        return new TreeSet<>(routes);
     }
 
     /**
@@ -38,14 +39,14 @@ public class CollectionManager {
      * @return collection name
      */
     public String getCollectionName() {
-        return treeSet.getClass().toString();
+        return routes.getClass().toString();
     }
 
     /**
      * @return size of collection
      */
     public int getSize() {
-        return treeSet.size();
+        return routes.size();
     }
 
     /**
@@ -53,14 +54,14 @@ public class CollectionManager {
      * @return true if element successfully added to collection, else return false
      */
     public boolean add(Route route) {
-        return treeSet.add(route);
+        return routes.add(route);
     }
 
     /**
      * @return true if collection contains Route with id, else return false
      */
     public boolean existElementWithId(Long id) {
-        for (Route setRoute : treeSet) {
+        for (Route setRoute : routes) {
             if (setRoute.getId().equals(id)) {
                 return true;
             }
@@ -72,7 +73,7 @@ public class CollectionManager {
      * update Route with given id with the data from given route
      */
     public void updateById(Long id, Route route) {
-        for (Route setRoute : treeSet) {
+        for (Route setRoute : routes) {
             if (setRoute.getId().equals(id)) {
                 setRoute.update(route);
             }
@@ -83,14 +84,14 @@ public class CollectionManager {
      * if collection contains element with given id, this element will be removed, else collection will not be changed
      */
     public void removeById(Long id) {
-        treeSet.removeIf(setRoute -> setRoute.getId().equals(id));
+        routes.removeIf(setRoute -> setRoute.getId().equals(id));
     }
 
     /**
      * remove all elements from collection
      */
     public void clear() {
-        treeSet.clear();
+        routes.clear();
     }
 
     /**
@@ -100,8 +101,8 @@ public class CollectionManager {
      */
     public boolean addIfMin(Route route) {
         boolean success = false;
-        if (Double.compare(route.getDistance(), treeSet.first().getDistance()) < 0) {
-            success = treeSet.add(route);
+        if (Double.compare(route.getDistance(), routes.first().getDistance()) < 0) {
+            success = routes.add(route);
         }
         return success;
     }
@@ -110,21 +111,21 @@ public class CollectionManager {
      * remove all routes in collection which distance greater than distance of given route
      */
     public void removeGreater(Route route) {
-        treeSet.removeIf(setRoute -> Double.compare(setRoute.getDistance(), route.getDistance()) > 0);
+        routes.removeIf(setRoute -> Double.compare(setRoute.getDistance(), route.getDistance()) > 0);
     }
 
     /**
      * remove all routes in collection which distance lower than distance of given route
      */
     public void removeLower(Route route) {
-        treeSet.removeIf(setRoute -> Double.compare(setRoute.getDistance(), route.getDistance()) < 0);
+        routes.removeIf(setRoute -> Double.compare(setRoute.getDistance(), route.getDistance()) < 0);
     }
 
     /**
      * @return route from collection with maximum distance
      */
     public Route maxByDistance() {
-        return treeSet.last();
+        return routes.last();
     }
 
     /**
@@ -132,7 +133,7 @@ public class CollectionManager {
      */
     public int countLessThanDistance(double distance) {
         int countElements = 0;
-        for (Route route : treeSet) {
+        for (Route route : routes) {
             if (Double.compare(route.getDistance(), distance) < 0) {
                 countElements++;
             }
@@ -145,7 +146,7 @@ public class CollectionManager {
      */
     public int countGreaterThanDistance(double distance) {
         int countElements = 0;
-        for (Route route : treeSet) {
+        for (Route route : routes) {
             if (Double.compare(route.getDistance(), distance) > 0) {
                 countElements++;
             }
