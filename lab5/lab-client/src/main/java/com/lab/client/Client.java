@@ -1,5 +1,7 @@
 package com.lab.client;
 
+import com.lab.client.Exceptions.FileReadPermissionException;
+import com.lab.client.Exceptions.RouteValidateException;
 import com.lab.client.MainClasses.CollectionManager;
 import com.lab.client.MainClasses.CommandManager;
 import com.lab.client.MainClasses.Console;
@@ -11,6 +13,7 @@ import java.util.Scanner;
 
 /**
  * Main class that start interactive mode
+ *
  * @author Sushenko Roman P3115
  */
 public final class Client {
@@ -32,9 +35,8 @@ public final class Client {
             console.startInteractiveMode();
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Имя файла не указано");
-        } catch (FileNotFoundException e) {
-            System.out.println("Файла с таким названием не существует");
+        } catch (FileNotFoundException | FileReadPermissionException | RouteValidateException e) {
+            System.out.println(e.getMessage());
         }
-
     }
 }

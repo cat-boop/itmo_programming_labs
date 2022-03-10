@@ -5,7 +5,10 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializer;
 import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonSyntaxException;
 import com.lab.client.Data.Route;
+import com.lab.client.Exceptions.FileReadPermissionException;
+import com.lab.client.Exceptions.RouteValidateException;
 import com.lab.client.Utility.RouteValidator;
 
 import java.io.File;
@@ -37,15 +40,29 @@ public class FileManager {
      * @return list of routes from file
      */
     public List<Route> readFromFile() throws FileNotFoundException {
+        File file = new File(fileName);
+        if (!file.exists()) {
+            throw new FileNotFoundException("Файла с таким названием не существует");
+        }
+        if (!file.canRead()) {
+            throw new FileReadPermissionException("Нет прав для чтения файла");
+        }
+        Scanner scanner = new Scanner(file);
         StringBuilder inputArray = new StringBuilder();
-        Scanner scanner = new Scanner(new File(fileName));
         while (scanner.hasNextLine()) {
             String nextLine = scanner.nextLine();
             inputArray.append(nextLine);
         }
         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, (JsonDeserializer<LocalDateTime>) (json, type, jsonPrimitive) -> LocalDateTime.parse(json.getAsJsonPrimitive().getAsString())).create();
-        Route[] routes = gson.fromJson(inputArray.toString(), Route[].class);
-        RouteValidator.validateRoutes(routes);
+        Route[] routes;
+        try {
+            routes = gson.fromJson(inputArray.toString(), Route[].class);
+        } catch (JsonSyntaxException e) {
+            throw new RouteValidateException("В исходном JSON-файле содержатся ошибки");
+        }
+        if (!RouteValidator.validateRoutes(routes)) {
+            throw new RouteValidateException("В исходном JSON-файле содержатся ошибки");
+        }
         return new ArrayList<>(Arrays.asList(routes));
     }
 
@@ -62,23 +79,6 @@ public class FileManager {
             System.out.println("Коллекция успешно сохранена в файл");
         } catch (IOException e) {
             System.out.println("Нет прав записи в файл. Коллекция не сохранена.");
-        }
-    }
-
-    /**
-     * @return scanner for script if script exist, else return null
-     */
-    public static Scanner getScannerToScript(String scriptName) {
-        File file = new File(scriptName);
-        if (file.exists() && !file.canRead()) {
-            System.out.println("Нет прав для чтения скрипта");
-            return null;
-        }
-        try {
-            return new Scanner(file);
-        } catch (FileNotFoundException e) {
-            System.out.println("Скрипта с таким именем не существует, проверьте правильность названия.");
-            return null;
         }
     }
 }

@@ -3,7 +3,8 @@ package com.lab.client.Utility;
 import com.lab.client.Data.Coordinates;
 import com.lab.client.Data.Location;
 import com.lab.client.Data.Route;
-import com.lab.client.Exceptions.ReadElementException;
+import com.lab.client.Exceptions.ReadElementFromScriptException;
+import com.lab.client.Exceptions.RouteValidateException;
 
 import java.util.Locale;
 import java.util.Scanner;
@@ -62,10 +63,12 @@ public class RouteReader {
             double distance = Double.parseDouble(scanner.nextLine());
             Route route = new Route(routeName, new Coordinates(coordinatesX, coordinatesY),
                     new Location(fromX, fromY, fromZ, fromName), new Location(toX, toY, toZ, toName), distance);
-            RouteValidator.validateRoutes(route);
+            if (!RouteValidator.validateRoutes(route)) {
+                throw new RouteValidateException();
+            }
             return route;
         } catch (Exception e) {
-            throw new ReadElementException("Ошибка при чтении элемента из скрипта. Проверьте правильность данных", e);
+            throw new ReadElementFromScriptException("Ошибка при чтении элемента из скрипта. Проверьте правильность данных", e);
         }
     }
 

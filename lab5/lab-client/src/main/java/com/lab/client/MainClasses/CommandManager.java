@@ -1,8 +1,12 @@
 package com.lab.client.MainClasses;
 
 import com.lab.client.Data.Route;
+import com.lab.client.Exceptions.FileReadPermissionException;
+import com.lab.client.Exceptions.RecursiveScriptException;
 import com.lab.client.Utility.RouteReader;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Set;
@@ -135,26 +139,31 @@ public class CommandManager {
     /**
      * script contains commands in the same format as the user enters them, method execute commands from script
      */
-    public void executeScript(String scriptName) {
+    public void executeScript(String scriptName) throws FileNotFoundException {
+        this.isScriptExecuting = true;
+        File file = new File(scriptName);
+        if (!file.exists()) {
+            throw new FileNotFoundException("Скрипта с таким именем не существует");
+        }
+        if (!file.canRead()) {
+            throw new FileReadPermissionException("Нет прав для чтения скрипта");
+        }
         if (scriptNames.contains(scriptName)) {
-            System.out.println("Скрипты нельзя вызывать рекурсивно");
-            return;
+            throw new RecursiveScriptException("Скрипты нельзя вызывать рекурсивно");
         }
         scriptNames.add(scriptName);
-        Scanner scannerToScript = FileManager.getScannerToScript(scriptName);
-        if (scannerToScript == null) {
-            return;
-        }
-        System.out.println("Исполнение скрипта \"" + scriptName + "\"");
+        Scanner scannerToScript = new Scanner(file);
         Scanner consoleScanner = routeReader.getScanner();
         routeReader.setScanner(scannerToScript);
-        this.isScriptExecuting = true;
+
+        System.out.println("Исполнение скрипта \"" + scriptName + "\"");
         while (scannerToScript.hasNext()) {
             String inputCommand = scannerToScript.nextLine();
             System.out.println("Исполнение команды \"" + inputCommand + "\"");
             this.executeCommand(inputCommand);
         }
         System.out.println("Исполнение скрипта \"" + scriptName + "\" завершено");
+
         routeReader.setScanner(consoleScanner);
         scriptNames.remove(scriptName);
         this.isScriptExecuting = false;
@@ -231,7 +240,6 @@ public class CommandManager {
      * method which get new route from console or from script
      *
      * @return new route read from script of from console
-     * @throws com.lab.client.Exceptions.ReadElementException if script contains error
      */
     public Route getRoute() {
         if (isScriptExecuting) {
@@ -244,6 +252,7 @@ public class CommandManager {
 
     /**
      * main method, that execute commands using Reflection API
+     *
      * @param inputCommand command entered by user
      */
     public boolean executeCommand(String inputCommand) {
@@ -268,10 +277,15 @@ public class CommandManager {
             } else {
                 methodToInvoke.invoke(this, inputLineDivided[1]);
             }
-        } catch (NoSuchMethodException e) {
+        } catch (NoSuchMethodException | IllegalArgumentException e) {
             System.out.println("Такой команды не существует");
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            System.out.println("Что-то очень плохое (CommandManager class executeScript method)");
+        } catch (InvocationTargetException e) {
+            if (e.getCause().getClass().equals(NoSuchElementException.class)) {
+                return true;
+            }
+            System.out.println(e.getCause().getMessage());
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
         return false;
     }
