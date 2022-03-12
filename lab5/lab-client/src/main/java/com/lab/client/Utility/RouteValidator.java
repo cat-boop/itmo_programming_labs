@@ -3,6 +3,7 @@ package com.lab.client.Utility;
 import com.lab.client.Data.Coordinates;
 import com.lab.client.Data.Location;
 import com.lab.client.Data.Route;
+import com.lab.client.Exceptions.RouteValidateException;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -19,97 +20,89 @@ public final class RouteValidator {
         throw new UnsupportedOperationException("This class should not be instantiated");
     }
 
-    //    /**
-//     * @param routes input routes that should be validated
-//     */
-//    public static boolean validateRoutes(Route... routes) {
-//        final Map<Long, Integer> idMap = new HashMap<>();
-//        final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-//        final Validator validator = factory.getValidator();
-//        long maxId = 0;
-//        for (Route route : routes) {
-//            if (!idMap.containsKey(route.getId())) {
-//                idMap.put(route.getId(), 0);
-//            } else {
-//                idMap.replace(route.getId(), idMap.get(route.getId()), idMap.get(route.getId()) + 1);
-//            }
-//            Set<ConstraintViolation<Route>> constraintViolations = validator.validate(route);
-//            if (idMap.get(route.getId()) > 1 || constraintViolations.size() > 0) {
-//                return false;
-//            }
-//            maxId = Math.max(route.getId(), maxId);
-//        }
-//        Route.setNextId(maxId);
-//        return true;
-//    }
-    public static boolean validateRoutes(Route... routes) {
-        boolean isIdRight;
-        boolean isNameRight;
-        boolean isCoordinatesRight;
-        boolean isCreationDateRight;
-        boolean isFromRight;
-        boolean isToRight;
-        boolean isDistanceRight;
+    public static void validateRoutes(Route... routes) {
         long maxId = 0;
         for (Route currentRoute : routes) {
-            isIdRight = validateId(currentRoute.getId());
-            isNameRight = validateName(currentRoute.getName());
-            isCoordinatesRight = validateCoordinates(currentRoute.getCoordinates());
-            isCreationDateRight = validateCreationDate(currentRoute.getCreationDate());
-            isFromRight = validateFrom(currentRoute.getFrom());
-            isToRight = validateTo(currentRoute.getTo());
-            isDistanceRight = validateDistance(currentRoute.getDistance());
-            if (!isIdRight || !isNameRight || !isCoordinatesRight || !isCreationDateRight || !isFromRight || !isToRight || !isDistanceRight) {
-                return false;
-            }
+            validateId(currentRoute.getId());
+            validateName(currentRoute.getName());
+            validateCoordinates(currentRoute.getCoordinates());
+            validateCreationDate(currentRoute.getCreationDate());
+            validateFrom(currentRoute.getFrom());
+            validateTo(currentRoute.getTo());
+            validateDistance(currentRoute.getDistance());
             maxId = Math.max(maxId, currentRoute.getId());
         }
         Route.setNextId(maxId + 1);
-        return true;
     }
 
-    private static boolean validateId(Long id) {
+    private static void validateId(Long id) {
         if (id == null) {
-            return false;
+            throw new RouteValidateException("Id не может быть null");
         }
         if (ID_SET.contains(id)) {
-            return false;
+            throw new RouteValidateException("Id не могут повторяться");
         }
         ID_SET.add(id);
-        return true;
     }
 
-    private static boolean validateName(String name) {
-        return name != null && !name.isEmpty();
+    private static void validateName(String name) {
+        if (name == null) {
+            throw new RouteValidateException("Имя маршрута не может быть пустым");
+        }
     }
 
-    private static boolean validateCoordinates(Coordinates coordinates) {
+    private static void validateCoordinates(Coordinates coordinates) {
         if (coordinates == null) {
-            return false;
+            throw new RouteValidateException("Координаты не могут быть null");
         }
         final int xMaxValue = 412;
-        return coordinates.getX() <= xMaxValue && coordinates.getY() != null;
-    }
-
-    private static boolean validateCreationDate(LocalDateTime localDateTime) {
-        return localDateTime != null;
-    }
-
-    private static boolean validateFrom(Location location) {
-        if (location == null) {
-            return false;
+        if (coordinates.getX() > xMaxValue) {
+            throw new RouteValidateException("Координата X маршрута не может быть больше 412");
         }
-        return location.getX() != null && location.getZ() != null && location.getName() != null;
-    }
-
-    private static boolean validateTo(Location location) {
-        if (location == null) {
-            return true;
+        if (coordinates.getY() == null) {
+            throw new RouteValidateException("Координата Y маршрута не может быть null");
         }
-        return location.getX() != null && location.getZ() != null && location.getName() != null;
     }
 
-    private static boolean validateDistance(double distance) {
-        return Double.compare(distance, 1) > 0;
+    private static void validateCreationDate(LocalDateTime localDateTime) {
+        if (localDateTime == null) {
+            throw new RouteValidateException("Время создания маршрута не может быть null");
+        }
+    }
+
+    private static void validateFrom(Location location) {
+        if (location == null) {
+            throw new RouteValidateException("Начальная локация не может быть null");
+        }
+        if (location.getX() == null) {
+            throw new RouteValidateException("Координата X начальной локации не может быть null");
+        }
+        if (location.getZ() == null) {
+            throw new RouteValidateException("Координата Z начальной локации не может быть null");
+        }
+        if (location.getName() == null) {
+            throw new RouteValidateException("Название начальной локации не может быть null");
+        }
+    }
+
+    private static void validateTo(Location location) {
+        if (location == null) {
+            return;
+        }
+        if (location.getX() == null) {
+            throw new RouteValidateException("Координата X конечной локации не может быть null");
+        }
+        if (location.getZ() == null) {
+            throw new RouteValidateException("Координата Z конечной локации не может быть null");
+        }
+        if (location.getName() == null) {
+            throw new RouteValidateException("Название конечной локации не может быть null");
+        }
+    }
+
+    private static void validateDistance(double distance) {
+        if (Double.compare(distance, 1) < 0) {
+            throw new RouteValidateException("Дистанция маршрута не может быть меньше 1");
+        }
     }
 }

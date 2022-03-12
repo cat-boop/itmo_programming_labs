@@ -60,9 +60,7 @@ public class FileManager {
         } catch (JsonSyntaxException e) {
             throw new RouteValidateException("В исходном JSON-файле содержатся ошибки");
         }
-        if (!RouteValidator.validateRoutes(routes)) {
-            throw new RouteValidateException("В исходном JSON-файле содержатся ошибки");
-        }
+        RouteValidator.validateRoutes(routes);
         return new ArrayList<>(Arrays.asList(routes));
     }
 
