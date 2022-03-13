@@ -20,6 +20,10 @@ public final class RouteValidator {
         throw new UnsupportedOperationException("This class should not be instantiated");
     }
 
+    /**
+     * validate input routes, throws RouteValidationException if at least one Route contains error
+     * @param routes input routes
+     */
     public static void validateRoutes(Route... routes) {
         long maxId = 0;
         for (Route currentRoute : routes) {
