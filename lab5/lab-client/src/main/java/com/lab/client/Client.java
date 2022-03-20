@@ -8,6 +8,7 @@ import com.lab.client.MainClasses.Console;
 import com.lab.client.MainClasses.FileManager;
 import com.lab.client.Utility.RouteReader;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
@@ -24,11 +25,12 @@ public final class Client {
     public static void main(String[] args) {
         try {
             String fileName = args[0];
+            File file = new File(fileName);
             Scanner scanner = new Scanner(System.in);
 
             RouteReader routeReader = new RouteReader(scanner);
-            FileManager fileManager = new FileManager(fileName);
-            CollectionManager collectionManager = new CollectionManager(fileManager.readFromFile());
+            FileManager fileManager = new FileManager(file);
+            CollectionManager collectionManager = new CollectionManager(fileManager.readElementsFromFile());
             CommandManager commandManager = new CommandManager(fileManager, routeReader, collectionManager);
 
             Console console = new Console(scanner, commandManager);
