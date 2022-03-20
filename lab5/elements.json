@@ -1,6 +1,6 @@
 [
   {
-    "id": 0,
+    "id": 6,
     "name": "Tour_de_france",
     "coordinates": {
       "x": 412,
@@ -13,7 +13,7 @@
       "z": 1.2,
       "name": "Paris"
     },
-    "distance": 1.2
+    "distance": 1.1
   },
   {
     "id": 1,

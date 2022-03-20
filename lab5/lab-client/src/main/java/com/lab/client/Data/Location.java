@@ -1,17 +1,17 @@
 package com.lab.client.Data;
 
-//import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotNull;
 
 /**
  * Location of Route
  */
 public class Location {
-    //@NotNull
+    @NotNull
     private Integer x; //Поле не может быть null
     private int y;
-    //@NotNull
+    @NotNull
     private Double z; //Поле не может быть null
-    //@NotNull
+    @NotNull
     private String name; //Строка не может быть пустой, Поле не может быть null
 
     public Location(Integer x, int y, Double z, String name) {

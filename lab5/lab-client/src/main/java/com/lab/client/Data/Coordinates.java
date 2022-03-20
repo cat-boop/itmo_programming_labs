@@ -1,16 +1,16 @@
 package com.lab.client.Data;
 
-//import javax.validation.constraints.Max;
-//import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
 
 /**
  * Coordinates of Route represented by x, y coordinates
  */
 public class Coordinates {
-    //private static final int MAX_X_VALUE = 412;
-    //@Max(MAX_X_VALUE)
+    private static final int MAX_X_VALUE = 412;
+    @Max(MAX_X_VALUE)
     private int x; //Максимальное значение поля: 412
-    //@NotNull
+    @NotNull
     private Long y; //Поле не может быть null
 
     public Coordinates(int x, Long y) {

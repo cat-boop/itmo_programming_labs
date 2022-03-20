@@ -1,8 +1,7 @@
 package com.lab.client.Data;
 
-//import javax.validation.constraints.Min;
-//import javax.validation.constraints.NotNull;
-
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -10,19 +9,19 @@ import java.time.LocalDateTime;
  */
 public class Route {
     private static Long nextId = 0L;
-    //@NotNull
-    //@Min(1)
+    @NotNull
+    @Min(1)
     private final Long id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
-    //@NotNull
+    @NotNull
     private String name; //Поле не может быть null, Строка не может быть пустой
-    //@NotNull
+    @NotNull
     private Coordinates coordinates; //Поле не может быть null
-    //@NotNull
+    @NotNull
     private final java.time.LocalDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
-    //@NotNull
+    @NotNull
     private Location from; //Поле не может быть null
     private Location to; //Поле может быть null
-    //@Min(1)
+    @Min(1)
     private double distance; //Значение поля должно быть больше 1
 
     public Route(String name, Coordinates coordinates, Location from, Location to, double distance) {
