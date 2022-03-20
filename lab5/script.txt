@@ -2,4 +2,3 @@ execute_script script1.txt
 max_by_distance
 count_lower_than_distance 50
 execute_script script1.txt
-exit

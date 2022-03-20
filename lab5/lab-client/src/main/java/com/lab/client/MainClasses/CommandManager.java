@@ -140,7 +140,6 @@ public class CommandManager {
      * script contains commands in the same format as the user enters them, method execute commands from script
      */
     public void executeScript(String scriptName) throws FileNotFoundException {
-        this.isScriptExecuting = true;
         File file = new File(scriptName);
         if (!file.exists()) {
             throw new FileNotFoundException("Скрипта с таким именем не существует");
@@ -151,6 +150,7 @@ public class CommandManager {
         if (scriptNames.contains(scriptName)) {
             throw new RecursiveScriptException("Скрипты нельзя вызывать рекурсивно");
         }
+        this.isScriptExecuting = true;
         scriptNames.add(scriptName);
         Scanner scannerToScript = new Scanner(file);
         Scanner consoleScanner = routeReader.getScanner();
@@ -186,6 +186,7 @@ public class CommandManager {
      */
     public void removeGreater() {
         collectionManager.removeGreater(getRoute());
+        System.out.println("Все элементы большие данного успешно удалены");
     }
 
     /**
@@ -193,6 +194,7 @@ public class CommandManager {
      */
     public void removeLower() {
         collectionManager.removeLower(getRoute());
+        System.out.println("Все элементы меньшие данного успешно удалены");
     }
 
     /**
