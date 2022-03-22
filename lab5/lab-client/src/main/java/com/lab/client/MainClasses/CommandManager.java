@@ -85,7 +85,6 @@ public class CommandManager {
 
     /**
      * update a route in collection
-     *
      * @param argument user-entered argument, which should be a long number
      */
     public void update(String argument) {
@@ -104,7 +103,6 @@ public class CommandManager {
 
     /**
      * remove route from collection
-     *
      * @param argument user-entered argument, which should be a long number
      */
     public void removeById(String argument) {
@@ -210,7 +208,6 @@ public class CommandManager {
 
     /**
      * prints number of routes from collection which distance less than the user-entered distance
-     *
      * @param argument user-entered argument, which should be a double number
      */
     public void countLessThanDistance(String argument) {
@@ -225,7 +222,6 @@ public class CommandManager {
 
     /**
      * prints number of routes from collection which distance greater than the user-entered distance
-     *
      * @param argument user-entered argument, which should be a double number
      */
     public void countGreaterThanDistance(String argument) {
@@ -240,7 +236,6 @@ public class CommandManager {
 
     /**
      * method which get new route from console or from script
-     *
      * @return new route read from script of from console
      */
     public Route getRoute() {
@@ -254,7 +249,6 @@ public class CommandManager {
 
     /**
      * main method, that execute commands using Reflection API
-     *
      * @param inputCommand command entered by user
      */
     public boolean executeCommand(String inputCommand) {

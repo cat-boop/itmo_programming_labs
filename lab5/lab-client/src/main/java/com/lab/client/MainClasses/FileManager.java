@@ -44,6 +44,11 @@ public class FileManager {
         }
     }
 
+    /**
+     * turn input file to list of string contains files insides
+     * @return list of string
+     * @throws FileNotFoundException if file doesn't exist
+     */
     public List<String> fileToStringList() throws FileNotFoundException {
         Scanner scanner = new Scanner(file);
         List<String> list = new ArrayList<>();
@@ -55,7 +60,6 @@ public class FileManager {
 
     /**
      * reads and return route from json file using JsonParser utility class
-     *
      * @return list of routes from file
      */
     public List<Route> readElementsFromFile() throws FileNotFoundException {
@@ -77,7 +81,6 @@ public class FileManager {
 
     /**
      * save collection to json file
-     *
      * @param set collection to save
      */
     public void saveToFile(Set<Route> set) {

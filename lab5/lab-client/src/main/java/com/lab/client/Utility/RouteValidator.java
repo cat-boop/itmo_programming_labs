@@ -29,6 +29,10 @@ public final class RouteValidator {
         throw new UnsupportedOperationException("This class should not be instantiated");
     }
 
+    /**
+     * validate input routes using hibernate validator
+     * @param routes input routes to validate
+     */
     public static void validateRoutes(Route... routes) {
         long maxId = 0;
         for (Route route : routes) {
