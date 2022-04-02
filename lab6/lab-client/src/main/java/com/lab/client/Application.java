@@ -34,7 +34,7 @@ public class Application {
                 CommandAnalyzer commandAnalyzer = new CommandAnalyzer(command, routeReader, false);
                 Request request = new Request(commandAnalyzer.getCommandName(), commandAnalyzer.getCommandArgument(), commandAnalyzer.getRoute());
                 //ByteBuffer byteBuffer = Serializer.serializeRequest(request);
-
+                //TODO send request
                 //SocketChannel socketChannel = socket.getChannel();
                 //socketChannel.write(byteBuffer);
                 //dataOutputStream.write(byteBuffer.array());
@@ -42,6 +42,7 @@ public class Application {
                 outputStream.writeObject(request);
                 outputStream.flush();
 
+                //TODO deserialize response
                 Response response = (Response) inputStream.readObject();
                 //final int arraySize = 10000;
                 //byte[] serializedResponse = new byte[arraySize];

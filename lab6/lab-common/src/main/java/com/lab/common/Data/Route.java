@@ -1,13 +1,14 @@
-package com.lab.common.util.Data;
+package com.lab.common.Data;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * Main class that stored in collection
  */
-public class Route {
+public class Route implements Serializable {
     private static Long nextId = 0L;
     @NotNull
     @Min(1)

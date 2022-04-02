@@ -1,11 +1,12 @@
-package com.lab.common.util.Data;
+package com.lab.common.Data;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  * Location of Route
  */
-public class Location {
+public class Location implements Serializable {
     @NotNull
     private Integer x; //Поле не может быть null
     private int y;

@@ -1,9 +1,9 @@
-package com.lab.client.Utility;
+package com.lab.common.util;
 
-import com.lab.client.Data.Coordinates;
-import com.lab.client.Data.Location;
-import com.lab.client.Data.Route;
-import com.lab.client.Exceptions.ReadElementFromScriptException;
+import com.lab.common.Data.Coordinates;
+import com.lab.common.Data.Location;
+import com.lab.common.Data.Route;
+import com.lab.common.Exceptions.ReadElementFromScriptException;
 
 import java.util.Locale;
 import java.util.Scanner;

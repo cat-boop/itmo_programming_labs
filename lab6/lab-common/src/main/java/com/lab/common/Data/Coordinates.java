@@ -1,12 +1,13 @@
-package com.lab.common.util.Data;
+package com.lab.common.Data;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 /**
  * Coordinates of Route represented by x, y coordinates
  */
-public class Coordinates {
+public class Coordinates implements Serializable {
     private static final int MAX_X_VALUE = 412;
     @Max(MAX_X_VALUE)
     private int x; //Максимальное значение поля: 412
