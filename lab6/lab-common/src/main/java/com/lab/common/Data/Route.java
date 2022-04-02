@@ -1,4 +1,4 @@
-package com.lab.client.Data;
+package com.lab.common.util.Data;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
