@@ -6,8 +6,8 @@ import com.lab.common.Exceptions.RouteValidateException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+//import java.io.ObjectInputStream;
+//import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
@@ -35,9 +35,7 @@ public final class Server {
             try (ServerSocket serverSocket = new ServerSocket(PORT)) {
                 while (ConsoleListener.isServerShouldWork()) {
                     Socket socket = serverSocket.accept();
-                    ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
-                    ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
-                    Application application = new Application(commandManager, inputStream, outputStream);
+                    Application application = new Application(commandManager, socket.getInputStream(), socket.getOutputStream());
                     application.run();
                 }
             } catch (IOException e) {

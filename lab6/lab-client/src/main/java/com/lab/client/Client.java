@@ -1,9 +1,10 @@
 package com.lab.client;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
+import java.net.InetSocketAddress;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.SocketChannel;
 import java.util.Scanner;
 
 public final class Client {
@@ -18,13 +19,19 @@ public final class Client {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Введите host: ");
         String host = scanner.nextLine();
+        InetSocketAddress socketAddress = new InetSocketAddress(host, PORT);
 
-        try (Socket socket = new Socket(host, PORT);
-             ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-             ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());) {
-            socket.setSoTimeout(TIMEOUT);
-            Application application = new Application(socket, objectInputStream, objectOutputStream);
+        try (Selector selector = Selector.open();
+             SocketChannel socketChannel = SocketChannel.open()) {
+
+            socketChannel.configureBlocking(false);
+            socketChannel.connect(socketAddress);
+            socketChannel.finishConnect();
+            socketChannel.register(selector, SelectionKey.OP_READ | SelectionKey.OP_WRITE);
+
+            Application application = new Application(selector, socketChannel, scanner);
             application.startInteractiveMode();
+
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
