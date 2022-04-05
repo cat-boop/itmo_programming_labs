@@ -52,5 +52,21 @@
       "name": "Krsk"
     },
     "distance": 4.5
+  },
+  {
+    "id": 0,
+    "name": "rg",
+    "coordinates": {
+      "x": 3,
+      "y": 2
+    },
+    "creationDate": "2022-04-05T23:03:48.1362255",
+    "from": {
+      "x": 1,
+      "y": 2,
+      "z": 5.0,
+      "name": "t"
+    },
+    "distance": 54657.0
   }
 ]

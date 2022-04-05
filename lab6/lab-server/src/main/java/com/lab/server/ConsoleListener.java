@@ -24,6 +24,7 @@ public class ConsoleListener extends Thread {
                 String commandName = scanner.nextLine().trim().toLowerCase(Locale.ROOT);
                 //TODO xueta, peredelivay
                 Request request = new Request(commandName, "", null);
+                //TODO bug
                 System.out.println(commandManager.executeCommand(request));
             } catch (NoSuchElementException e) {
                 //System.exit()?

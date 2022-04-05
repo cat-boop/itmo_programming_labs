@@ -1,5 +1,7 @@
 package com.lab.common.util;
 
+import com.lab.common.Exceptions.SerializeException;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -15,11 +17,20 @@ public final class Serializer {
              ObjectOutputStream outputStream = new ObjectOutputStream(arrayOutputStream)) {
             outputStream.writeObject(request);
             outputStream.flush();
-            byte[] serializedObject = arrayOutputStream.toByteArray();
-            return ByteBuffer.wrap(serializedObject);
+            return ByteBuffer.wrap(arrayOutputStream.toByteArray());
         } catch (IOException e) {
-            //TODO made own exception
-            throw new RuntimeException("Can't serialize");
+            throw new SerializeException("Невозможно сериализовать запрос");
+        }
+    }
+
+    public static byte[] serializeResponse(Response response) {
+        try (ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
+             ObjectOutputStream outputStream = new ObjectOutputStream(arrayOutputStream)) {
+            outputStream.writeObject(response);
+            outputStream.flush();
+            return arrayOutputStream.toByteArray();
+        } catch (IOException e) {
+            throw new SerializeException("Невозможно сериализовать запрос");
         }
     }
 }
