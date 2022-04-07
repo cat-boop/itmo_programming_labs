@@ -14,7 +14,7 @@ public class RemoveByIdCommand implements Command {
 
     @Override
     public String execute(Request request) {
-        long id = Long.parseLong(request.getCommandArgument());
+        long id = request.getCommandArgument().longValue();
         try {
             collectionManager.removeById(id);
             return "Элемент с id = " + id + " удален из коллекции";

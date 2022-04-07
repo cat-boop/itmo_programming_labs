@@ -12,7 +12,7 @@ public class CountLessThanDistanceCommand implements Command {
 
     @Override
     public String execute(Request request) {
-        double distance = Double.parseDouble(request.getCommandArgument());
+        double distance = request.getCommandArgument().doubleValue();
         return "Количество маршрутов с протяженностью меньше чем " + distance
                 + " равно " + collectionManager.countLessThanDistance(distance);
     }

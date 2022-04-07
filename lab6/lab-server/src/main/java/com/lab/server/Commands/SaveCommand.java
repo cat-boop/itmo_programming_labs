@@ -2,7 +2,7 @@ package com.lab.server.Commands;
 
 import com.lab.common.util.Request;
 import com.lab.server.CollectionManager;
-import com.lab.server.FileManager;
+import com.lab.common.util.FileManager;
 
 public class SaveCommand implements Command {
     private final FileManager fileManager;

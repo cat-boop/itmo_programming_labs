@@ -6,13 +6,18 @@ import java.io.Serializable;
 
 public class Request implements Serializable {
     private final String commandName;
-    private final String commandArgument;
-    private final Route routeToSend;
+    private Number commandArgument;
+    private Route routeToSend;
 
-    public Request(String commandName, String commandArgument, Route routeToSend) {
+    public Request(String commandName) {
         this.commandName = commandName;
-        //TODO argument should not be string
+    }
+
+    public void setCommandArgument(Number commandArgument) {
         this.commandArgument = commandArgument;
+    }
+
+    public void setRouteToSend(Route routeToSend) {
         this.routeToSend = routeToSend;
     }
 
@@ -20,7 +25,7 @@ public class Request implements Serializable {
         return commandName;
     }
 
-    public String getCommandArgument() {
+    public Number getCommandArgument() {
         return commandArgument;
     }
 
@@ -29,6 +34,8 @@ public class Request implements Serializable {
     }
 
     public String toString() {
-        return "command name = " + commandName + "; command argument = " + commandArgument + "; route to send = " + routeToSend;
+        return "[Имя команды = " + commandName
+                + (commandArgument == null ? "" : "; Аргумент команды = " + commandArgument)
+                + (routeToSend == null ? "" : "; Путь = " + routeToSend) + "]";
     }
 }

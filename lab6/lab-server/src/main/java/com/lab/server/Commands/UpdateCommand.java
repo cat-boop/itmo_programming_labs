@@ -14,7 +14,7 @@ public class UpdateCommand implements Command {
 
     @Override
     public String execute(Request request) {
-        long id = Long.parseLong(request.getCommandArgument());
+        long id = request.getCommandArgument().longValue();
         try {
             collectionManager.updateById(id, request.getRouteToSend());
             return "Элемент с id = " + id + " успешно обновлен";
