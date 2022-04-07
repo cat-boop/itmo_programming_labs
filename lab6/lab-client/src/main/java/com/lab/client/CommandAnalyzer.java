@@ -6,20 +6,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CommandAnalyzer {
-    private final String command;
     private String commandName;
     private String commandArgument;
     private Route route;
     private final RouteReader routeReader;
-    private final boolean needReadFromScript;
+    private boolean commandHaveArgument;
+    private boolean commandNeedRoute;
     private final List<String> commands;
     private final List<String> commandsNeedRoute;
     private final List<String> commandsNeedArgument;
 
-    public CommandAnalyzer(String command, RouteReader routeReader, boolean needReadFromScript) {
-        this.command = command;
+    public CommandAnalyzer(String command, RouteReader routeReader) {
         this.routeReader = routeReader;
-        this.needReadFromScript = needReadFromScript;
+        commandHaveArgument = false;
+        commandNeedRoute = false;
 
         commands = new ArrayList<>();
         commands.add("add");
@@ -50,7 +50,15 @@ public class CommandAnalyzer {
         commandsNeedArgument.add("count_less_than_distance");
         commandsNeedArgument.add("count_greater_than_distance");
 
-        analyzeCommand();
+        analyzeCommand(command);
+    }
+
+    public boolean isCommandHaveArgument() {
+        return commandHaveArgument;
+    }
+
+    public boolean isCommandNeedRoute() {
+        return commandNeedRoute;
     }
 
     public String getCommandName() {
@@ -65,26 +73,28 @@ public class CommandAnalyzer {
         return route;
     }
 
-    private void analyzeCommand() {
+    private void analyzeCommand(String command) {
         String[] inputLineDivided = command.trim().split(" ", 2);
         commandName = inputLineDivided[0].toLowerCase();
 
-        if (!commands.contains(commandName)
-                || (commandsNeedArgument.contains(commandName) && inputLineDivided.length == 1)
-                || (!commandsNeedArgument.contains(commandName) && inputLineDivided.length == 2)) {
+        if (!commands.contains(commandName)) {
             throw new IllegalStateException("Такой команды не существует");
         }
-
-        if (inputLineDivided.length == 2) {
-            commandArgument = inputLineDivided[1];
+        if (commandsNeedArgument.contains(commandName) && inputLineDivided.length == 1) {
+            throw new IllegalStateException("Аргумент не указан");
+        }
+        if (!commandsNeedArgument.contains(commandName) && inputLineDivided.length == 2) {
+            throw new IllegalStateException("Аргумент не должен быть указан");
         }
 
+        if (commandsNeedArgument.contains(commandName)) {
+            commandHaveArgument = true;
+            commandArgument = inputLineDivided[1];
+        }
         if (commandsNeedRoute.contains(commandName)) {
-            if (needReadFromScript) {
-                route = routeReader.readRouteFromScript();
-            } else {
-                route = routeReader.readRouteFromConsole();
-            }
+            commandNeedRoute = true;
+            //TODO в route reader должен быть один общий метод считывания
+            route = routeReader.readRouteFromConsole();
         }
     }
 }

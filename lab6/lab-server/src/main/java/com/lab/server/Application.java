@@ -6,50 +6,62 @@ import com.lab.common.util.Deserializer;
 import com.lab.common.util.Request;
 import com.lab.common.util.Response;
 import com.lab.common.util.Serializer;
+import ch.qos.logback.classic.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 public class Application {
     private final CommandManager commandManager;
     private final BufferedInputStream inputStream;
     private final BufferedOutputStream outputStream;
+    private final Logger logger;
 
-    public Application(CommandManager commandManager, InputStream inputStream, OutputStream outputStream) {
+    public Application(CommandManager commandManager, BufferedInputStream inputStream, BufferedOutputStream outputStream) {
         this.commandManager = commandManager;
-        this.inputStream = new BufferedInputStream(inputStream);
-        this.outputStream = new BufferedOutputStream(outputStream);
+        this.inputStream = inputStream;
+        this.outputStream = outputStream;
+        logger = (Logger) LoggerFactory.getLogger(Application.class);
     }
 
     public void run() {
         try {
-            System.out.println("Client has connected");
+            System.out.println("Клиент подключился");
+            logger.info("Клиент подключился");
 
-            final int size = 1000;
-            byte[] serializedRequest = new byte[size];
-            System.out.println(inputStream.read(serializedRequest));
-            Request request = Deserializer.deserializeRequest(serializedRequest);
-            while (ConsoleListener.isServerShouldWork()) {
-                System.out.println("Client request = " + request);
+            Request request = receiveRequest();
+            while (true) {
+                System.out.println("Клиент отправил запрос: " + request);
+                logger.info("Клиент отправил запрос: {}", request);
+
                 String serverResponseMessage = commandManager.executeCommand(request);
+                logger.info("Результат исполнения запроса: {}", serverResponseMessage);
 
                 Response response = new Response(serverResponseMessage);
-                outputStream.write(Serializer.serializeResponse(response));
+                byte[] serializedResponse = Serializer.serializeResponse(response);
+                outputStream.write(serializedResponse);
                 outputStream.flush();
-                System.out.println("sent response");
-                final long time = 1000;
-                Thread.sleep(time);
+                logger.info("Отправлен ответ размером {} байт", serializedResponse.length);
 
-                serializedRequest = new byte[size];
-                System.out.println(inputStream.read(serializedRequest));
-                request = Deserializer.deserializeRequest(serializedRequest);
+                request = receiveRequest();
             }
-        } catch (IOException | SerializeException | DeserializeException | InterruptedException e) {
-            e.printStackTrace();
-            System.out.println("Client has disconnected");
+        } catch (IOException | SerializeException | DeserializeException e) {
+            //e.printStackTrace();
+            System.out.println("Клиент отключился");
+            logger.info("Клиент отключился");
         }
+    }
+
+    private Request receiveRequest() throws IOException {
+        final int size = 1000;
+        byte[] serializedRequest = new byte[size];
+        int bytesRead = inputStream.read(serializedRequest);
+        if (bytesRead == -1) {
+            throw new IOException();
+        }
+        logger.debug("Прочитано {} байт", bytesRead);
+        return Deserializer.deserializeRequest(serializedRequest);
     }
 }
