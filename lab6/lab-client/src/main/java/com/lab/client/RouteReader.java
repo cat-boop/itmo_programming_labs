@@ -1,4 +1,4 @@
-package com.lab.common.util;
+package com.lab.client;
 
 import com.lab.common.Data.Coordinates;
 import com.lab.common.Data.Location;
@@ -12,61 +12,19 @@ import java.util.Scanner;
  * Class that read new Route from console or from script
  */
 public class RouteReader {
-    private Scanner scanner;
+    private final Scanner scanner;
+    private final boolean isScriptExecuting;
 
-    public RouteReader(Scanner scanner) {
+    public RouteReader(Scanner scanner, boolean isScriptExecuting) {
         this.scanner = scanner;
-    }
-
-    /**
-     * @param scanner new scanner
-     */
-    public void setScanner(Scanner scanner) {
-        this.scanner = scanner;
-    }
-
-    /**
-     * @return return current scanner
-     */
-    public Scanner getScanner() {
-        return scanner;
+        this.isScriptExecuting = isScriptExecuting;
     }
 
     /**
      * @return new Route read from console
      */
-    public Route readRouteFromConsole() {
+    public Route readRoute() {
         return new Route(readName(), readCoordinates(), readFrom(), readTo(), readDistance());
-    }
-
-    /**
-     * @return new Route read from script
-     */
-    public Route readRouteFromScript() {
-        try {
-            String routeName = scanner.nextLine();
-
-            int coordinatesX = Integer.parseInt(scanner.nextLine());
-            long coordinatesY = Long.parseLong(scanner.nextLine());
-
-            int fromX = Integer.parseInt(scanner.nextLine());
-            int fromY = Integer.parseInt(scanner.nextLine());
-            double fromZ = Double.parseDouble(scanner.nextLine());
-            String fromName = scanner.nextLine();
-
-            int toX = Integer.parseInt(scanner.nextLine());
-            int toY = Integer.parseInt(scanner.nextLine());
-            double toZ = Double.parseDouble(scanner.nextLine());
-            String toName = scanner.nextLine();
-
-            double distance = Double.parseDouble(scanner.nextLine());
-            Route route = new Route(routeName, new Coordinates(coordinatesX, coordinatesY),
-                    new Location(fromX, fromY, fromZ, fromName), new Location(toX, toY, toZ, toName), distance);
-            RouteValidator.validateRoutes(route);
-            return route;
-        } catch (Exception e) {
-            throw new ReadElementFromScriptException("Ошибка при чтении элемента из скрипта. Проверьте правильность данных", e);
-        }
     }
 
     /**
@@ -76,6 +34,9 @@ public class RouteReader {
         System.out.print("Введите название маршрута: ");
         String name = scanner.nextLine();
         while (name == null || name.isEmpty()) {
+            if (isScriptExecuting) {
+                throw new ReadElementFromScriptException("Название маршрута не может быть пустым");
+            }
             System.out.print("Название маршрута не может быть пустым, повторите попытку: ");
             name = scanner.nextLine();
         }
@@ -92,6 +53,9 @@ public class RouteReader {
         System.out.print("Введите координату X маршрута: ");
         x = readInt();
         while (x > xMaxValue) {
+            if (isScriptExecuting) {
+                throw new ReadElementFromScriptException("Координата X не может быть больше 412");
+            }
             System.out.print("Координата X не может быть больше 412, повторите попытку: ");
             x = readInt();
         }
@@ -113,6 +77,9 @@ public class RouteReader {
         System.out.print("Введите название начальной локации маршрута: ");
         String name = scanner.nextLine();
         while (name == null || name.isEmpty()) {
+            if (isScriptExecuting) {
+                throw new ReadElementFromScriptException("Имя начальной локации не может быть пустым");
+            }
             System.out.print("Имя начальной локации не может быть пустым, повторите попытку: ");
             name = scanner.nextLine();
         }
@@ -139,10 +106,15 @@ public class RouteReader {
                 System.out.print("Введите название конечной локации маршрута: ");
                 String name = scanner.nextLine();
                 while (name == null || name.isEmpty()) {
+                    if (isScriptExecuting) {
+                        throw new ReadElementFromScriptException("Имя конечной локации не может быть пустым");
+                    }
                     System.out.print("Имя конечной локации не может быть пустым, повторите попытку: ");
                     name = scanner.nextLine();
                 }
                 return new Location(x, y, z, name);
+            } else if (isScriptExecuting) {
+                throw new ReadElementFromScriptException("Ошибка при считывании конечной локации");
             }
         }
     }
@@ -154,6 +126,9 @@ public class RouteReader {
         System.out.print("Введите дистанцию маршрута: ");
         double value = readDouble();
         while (Double.compare(value, 1) <= 0) {
+            if (isScriptExecuting) {
+                throw new ReadElementFromScriptException("Дистанция должна быть больше 1");
+            }
             System.out.print("Дистанция должна быть больше 1, повторите попытку: ");
             value = readDouble();
         }
@@ -167,7 +142,10 @@ public class RouteReader {
                 value = Integer.parseInt(scanner.nextLine());
                 break;
             } catch (NumberFormatException e) {
-                System.out.print("Ошибка при вводе, повторите попытку: ");
+                if (isScriptExecuting) {
+                    throw new ReadElementFromScriptException("Ошибка при вводе числа типа int");
+                }
+                System.out.print("Ошибка при вводе числа типа int, повторите попытку: ");
             }
         }
         return value;
@@ -180,7 +158,10 @@ public class RouteReader {
                 value = Long.parseLong(scanner.nextLine());
                 break;
             } catch (NumberFormatException e) {
-                System.out.print("Ошибка при вводе, повторите попытку: ");
+                if (isScriptExecuting) {
+                    throw new ReadElementFromScriptException("Ошибка при вводе числа типа long");
+                }
+                System.out.print("Ошибка при вводе типа long, повторите попытку: ");
             }
         }
         return value;
@@ -193,7 +174,10 @@ public class RouteReader {
                 value = Double.parseDouble(scanner.nextLine());
                 break;
             } catch (NumberFormatException | NullPointerException e) {
-                System.out.print("Ошибка при вводе, повторите попытку: ");
+                if (isScriptExecuting) {
+                    throw new ReadElementFromScriptException("Ошибка при вводе числа типа double");
+                }
+                System.out.print("Ошибка при вводе числа типа double, повторите попытку: ");
             }
         }
         return value;
