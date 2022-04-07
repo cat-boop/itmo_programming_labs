@@ -5,10 +5,10 @@ import java.net.InetSocketAddress;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
+import java.nio.channels.UnresolvedAddressException;
 import java.util.Scanner;
 
 public final class Client {
-    private static final int TIMEOUT = 3000;
     private static final int PORT = 1658;
 
     private Client() {
@@ -33,7 +33,9 @@ public final class Client {
             application.startInteractiveMode();
 
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Сервер отдыхает");
+        } catch (UnresolvedAddressException e) {
+            System.out.println("Сервер с данным адресом недоступен");
         }
     }
 }
