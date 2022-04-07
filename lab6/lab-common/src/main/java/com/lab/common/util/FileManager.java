@@ -1,4 +1,4 @@
-package com.lab.server;
+package com.lab.common.util;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -9,7 +9,6 @@ import com.google.gson.JsonSyntaxException;
 import com.lab.common.Data.Route;
 import com.lab.common.Exceptions.FileReadPermissionException;
 import com.lab.common.Exceptions.RouteValidateException;
-import com.lab.common.util.RouteValidator;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +29,7 @@ import java.util.Scanner;
  */
 public class FileManager {
     private final File file;
+    private final Scanner scanner;
 
     public FileManager(File file) throws FileNotFoundException {
         this.file = file;
@@ -42,15 +42,18 @@ public class FileManager {
         if (!file.canRead()) {
             throw new FileReadPermissionException("Нет прав для чтения файла");
         }
+        this.scanner = new Scanner(file);
+    }
+
+    public Scanner getScannerToFile() {
+        return scanner;
     }
 
     /**
      * turn input file to list of string contains files insides
      * @return list of string
-     * @throws FileNotFoundException if file doesn't exist
      */
-    public List<String> fileToStringList() throws FileNotFoundException {
-        Scanner scanner = new Scanner(file);
+    public List<String> fileToStringList() {
         List<String> list = new ArrayList<>();
         while (scanner.hasNextLine()) {
             list.add(scanner.nextLine());
@@ -62,7 +65,7 @@ public class FileManager {
      * reads and return route from json file using JsonParser utility class
      * @return list of routes from file
      */
-    public List<Route> readElementsFromFile() throws FileNotFoundException {
+    public List<Route> readElementsFromFile() {
         StringBuilder inputArray = new StringBuilder();
         for (String string : fileToStringList()) {
             inputArray.append(string);

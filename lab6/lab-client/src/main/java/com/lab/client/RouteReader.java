@@ -21,14 +21,14 @@ public class RouteReader {
     }
 
     /**
-     * @return new Route read from console
+     * @return new Route read from console or script
      */
     public Route readRoute() {
         return new Route(readName(), readCoordinates(), readFrom(), readTo(), readDistance());
     }
 
     /**
-     * @return read name of Route from console
+     * @return read name of Route from console or script
      */
     public String readName() {
         System.out.print("Введите название маршрута: ");
@@ -44,7 +44,7 @@ public class RouteReader {
     }
 
     /**
-     * @return read coordinates of Route from console
+     * @return read coordinates of Route from console or script
      */
     public Coordinates readCoordinates() {
         final int xMaxValue = 412;
@@ -65,7 +65,7 @@ public class RouteReader {
     }
 
     /**
-     * @return read start location of Route from console
+     * @return read start location of Route from console or script
      */
     public Location readFrom() {
         System.out.print("Введите координату X точки начала маршрута: ");
@@ -87,7 +87,7 @@ public class RouteReader {
     }
 
     /**
-     * @return read end location of Route from console
+     * @return read end location of Route from console or script
      */
     public Location readTo() {
         String response;
@@ -120,7 +120,7 @@ public class RouteReader {
     }
 
     /**
-     * @return read distance of Route from console
+     * @return read distance of Route from console or script
      */
     public double readDistance() {
         System.out.print("Введите дистанцию маршрута: ");
