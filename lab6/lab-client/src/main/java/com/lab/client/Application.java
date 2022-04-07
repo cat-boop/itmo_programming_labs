@@ -1,13 +1,17 @@
 package com.lab.client;
 
+import com.lab.common.Exceptions.DeserializeException;
+import com.lab.common.Exceptions.FileReadPermissionException;
+import com.lab.common.Exceptions.ReadElementFromScriptException;
 import com.lab.common.Exceptions.SerializeException;
-import com.lab.common.util.CommandAnalyzer;
 import com.lab.common.util.Deserializer;
+import com.lab.common.util.FileManager;
 import com.lab.common.util.Request;
 import com.lab.common.util.Response;
-import com.lab.common.util.RouteReader;
 import com.lab.common.util.Serializer;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
@@ -20,46 +24,65 @@ import java.util.Set;
 public class Application {
     private final Selector selector;
     private final SocketChannel socketChannel;
-    private final Scanner scanner;
+    private final Scanner consoleScanner;
 
-    public Application(Selector selector, SocketChannel socketChannel, Scanner scanner) {
+    public Application(Selector selector, SocketChannel socketChannel, Scanner consoleScanner) {
         this.selector = selector;
         this.socketChannel = socketChannel;
-        this.scanner = scanner;
+        this.consoleScanner = consoleScanner;
     }
 
     public void startInteractiveMode() throws IOException {
+        RouteReader consoleRouteReader = new RouteReader(consoleScanner, false);
         System.out.println("Подключился к серверу");
+
         System.out.print("Введите команду: ");
-        String command = scanner.nextLine();
-
+        String command = consoleScanner.nextLine();
         while (!"exit".equals(command)) {
-
-            if (sendRequest(command)) {
-                Response response = receiveResponse();
-                System.out.println("Ответ с сервера: " + response.getServerMessage());
+            try {
+                CommandAnalyzer commandAnalyzer = new CommandAnalyzer(command);
+                if (commandAnalyzer.isCommandScript()) {
+                    executeScript(commandAnalyzer.getCommandArgument());
+                } else {
+                    sendReceiveLoop(command, consoleRouteReader);
+                }
+            } catch (IllegalStateException e) {
+                System.out.println(e.getMessage());
             }
-
             System.out.print("Введите команду: ");
-            command = scanner.nextLine();
-
+            command = consoleScanner.nextLine();
         }
         System.out.print("Отключился от сервера");
     }
 
-    private boolean sendRequest(String command) {
+    private void executeScript(String scriptName) throws IOException {
         try {
-            RouteReader routeReader = new RouteReader(scanner);
-            CommandAnalyzer commandAnalyzer = new CommandAnalyzer(command, routeReader, false);
-            Request request = new Request(commandAnalyzer.getCommandName(), commandAnalyzer.getCommandArgument(), commandAnalyzer.getRoute());
-            ByteBuffer byteBuffer = Serializer.serializeRequest(request);
-            System.out.println("write " + byteBuffer.array().length + " " + socketChannel.write(byteBuffer));
-            final long time = 1000;
-            Thread.sleep(time);
-            return true;
-        } catch (IllegalStateException | SerializeException | IOException | InterruptedException e) {
-            e.printStackTrace();
-            return false;
+            File file = new File(scriptName);
+            FileManager fileManager = new FileManager(file);
+            Scanner scannerToScript = fileManager.getScannerToFile();
+            RouteReader scriptRouteReader = new RouteReader(scannerToScript, true);
+
+            System.out.println("Исполнение скрипта \"" + scriptName + "\" начато");
+            while (scannerToScript.hasNextLine()) {
+                String scriptCommand = scannerToScript.nextLine();
+                sendReceiveLoop(scriptCommand, scriptRouteReader);
+            }
+            System.out.println("Исполнение скрипта \"" + scriptName + "\" завершено");
+
+        } catch (FileNotFoundException | FileReadPermissionException | ReadElementFromScriptException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void sendReceiveLoop(String command, RouteReader routeReader) throws IOException {
+        try {
+            Request request = RequestCreator.createRequest(command, routeReader);
+            byte[] serializedRequest = Serializer.serializeRequest(request);
+            socketChannel.write(ByteBuffer.wrap(serializedRequest));
+            Response response = receiveResponse();
+            System.out.println("Ответ с сервера: " + response.getServerMessage());
+        } catch (SerializeException | DeserializeException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -73,7 +96,10 @@ public class Application {
             SelectionKey key = iter.next();
 
             if (key.isReadable()) {
-                System.out.println("read " + socketChannel.read(byteBuffer) + " bytes");
+                int bytesRead = socketChannel.read(byteBuffer);
+                if (bytesRead <= 0) {
+                    continue;
+                }
                 byteBuffer.flip();
                 byte[] serializedResponse = new byte[byteBuffer.remaining()];
                 byteBuffer.get(serializedResponse);
