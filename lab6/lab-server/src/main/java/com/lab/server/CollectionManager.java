@@ -15,12 +15,16 @@ import java.util.stream.Collectors;
  * Class that manage collection
  */
 public class CollectionManager {
+    private static Long nextId = 1L;
     private final NavigableSet<Route> routes;
     private final LocalDateTime creationDate;
 
     public CollectionManager(List<Route> routes) {
         this.routes = new TreeSet<>(Comparator.comparing(Route::getName));
         this.routes.addAll(routes);
+        if (routes.size() > 0) {
+            nextId = routes.stream().max(Comparator.comparing(Route::getId)).get().getId() + 1;
+        }
         creationDate = LocalDateTime.now();
     }
 
@@ -57,6 +61,7 @@ public class CollectionManager {
      * @return true if element successfully added to collection, else false
      */
     public boolean add(Route route) {
+        route.setId(nextId++);
         return routes.add(route);
     }
 
@@ -92,6 +97,7 @@ public class CollectionManager {
     public boolean addIfMin(Route route) {
         boolean success = false;
         if (routes.stream().allMatch((collectionRoute) -> Double.compare(route.getDistance(), collectionRoute.getDistance()) < 0)) {
+            route.setId(nextId++);
             success = routes.add(route);
         }
         return success;

@@ -9,11 +9,9 @@ import java.time.LocalDateTime;
  * Main class that stored in collection
  */
 public class Route implements Serializable {
-    //TODO move
-    private static transient Long nextId = 0L;
     @NotNull
     @Min(1)
-    private final Long id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
+    private Long id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     @NotNull
     private String name; //Поле не может быть null, Строка не может быть пустой
     @NotNull
@@ -27,7 +25,6 @@ public class Route implements Serializable {
     private double distance; //Значение поля должно быть больше 1
 
     public Route(String name, Coordinates coordinates, Location from, Location to, double distance) {
-        id = nextId++;
         creationDate = java.time.LocalDateTime.now();
         this.name = name;
         this.coordinates = coordinates;
@@ -36,8 +33,8 @@ public class Route implements Serializable {
         this.distance = distance;
     }
 
-    public static void setNextId(Long id) {
-        nextId = id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     /**
