@@ -55,7 +55,10 @@ public class Application {
     }
 
     private Request receiveRequest() throws IOException {
-        final int size = 1000;
+        while (inputStream.available() == 0) {
+            continue;
+        }
+        final int size = inputStream.available() + 4096;
         byte[] serializedRequest = new byte[size];
         int bytesRead = inputStream.read(serializedRequest);
         if (bytesRead == -1) {

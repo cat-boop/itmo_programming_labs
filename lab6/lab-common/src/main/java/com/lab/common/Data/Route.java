@@ -103,7 +103,7 @@ public class Route implements Serializable {
      */
     @Override
     public String toString() {
-        return "Id = " + id + ", name = \"" + name + "\", coordinates = " + coordinates + ", creation date = "
-                + creationDate.toString() + ", from = " + from + ", to = " + to + ", distance = " + distance;
+        return "{Id = " + id + ", name = \"" + name + "\", coordinates = " + coordinates + ", creation date = "
+                + creationDate.toString() + ", from = " + from + ", to = " + to + ", distance = " + distance + "}";
     }
 }

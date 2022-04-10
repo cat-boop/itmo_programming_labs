@@ -13,6 +13,7 @@ import com.lab.common.util.Serializer;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
@@ -78,6 +79,7 @@ public class Application {
         try {
             Request request = RequestCreator.createRequest(command, routeReader);
             byte[] serializedRequest = Serializer.serializeRequest(request);
+            System.out.println(serializedRequest.length);
             socketChannel.write(ByteBuffer.wrap(serializedRequest));
             Response response = receiveResponse();
             System.out.println("Ответ с сервера: " + response.getServerMessage());
@@ -100,10 +102,15 @@ public class Application {
                 if (bytesRead <= 0) {
                     continue;
                 }
-                byteBuffer.flip();
+                ((Buffer) byteBuffer).flip();
                 byte[] serializedResponse = new byte[byteBuffer.remaining()];
                 byteBuffer.get(serializedResponse);
-                return Deserializer.deserializeResponse(serializedResponse);
+                try {
+                    return Deserializer.deserializeResponse(serializedResponse);
+                } catch (DeserializeException e) {
+                    byteBuffer = ByteBuffer.allocate(byteBuffer.capacity() + byteBuffer.capacity() * 2);
+                    byteBuffer.put(serializedResponse);
+                }
             }
         }
     }

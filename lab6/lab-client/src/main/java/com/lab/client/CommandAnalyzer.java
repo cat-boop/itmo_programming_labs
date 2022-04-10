@@ -1,7 +1,5 @@
 package com.lab.client;
 
-import com.lab.common.Data.Route;
-
 public class CommandAnalyzer {
     private String commandName;
     private String commandArgument;
