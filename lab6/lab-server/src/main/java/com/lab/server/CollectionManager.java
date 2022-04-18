@@ -20,7 +20,7 @@ public class CollectionManager {
     private final LocalDateTime creationDate;
 
     public CollectionManager(List<Route> routes) {
-        this.routes = new TreeSet<>(Comparator.comparing(Route::getName));
+        this.routes = new TreeSet<>();
         this.routes.addAll(routes);
         if (routes.size() > 0) {
             nextId = routes.stream().max(Comparator.comparing(Route::getId)).get().getId() + 1;
@@ -31,7 +31,7 @@ public class CollectionManager {
     /**
      * @return current collection
      */
-    public NavigableSet<Route> getCollection() {
+    public TreeSet<Route> getCollection() {
         return new TreeSet<>(routes);
     }
 

@@ -3,8 +3,6 @@ package com.lab.server;
 import com.lab.common.Exceptions.FileReadPermissionException;
 import com.lab.common.Exceptions.RouteValidateException;
 import com.lab.common.util.FileManager;
-import ch.qos.logback.classic.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -17,7 +15,6 @@ import java.util.Scanner;
 
 public final class Server {
     private static final int PORT = 1658;
-    private static final Logger LOGGER = (Logger) LoggerFactory.getLogger(Server.class);
 
     private Server() {
         throw new UnsupportedOperationException("This is an utility class and can not be instantiated");
@@ -30,7 +27,7 @@ public final class Server {
             FileManager fileManager = new FileManager(file);
             CollectionManager collectionManager = new CollectionManager(fileManager.readElementsFromFile());
             CommandManager commandManager = new CommandManager(fileManager, collectionManager);
-            LOGGER.info("Файл успешно прочитан, ожидание подключения");
+            ServerLogger.logInfoMessage("Файл успешно прочитан, ожидание подключения");
 
             Scanner scanner = new Scanner(System.in);
             ServerConsoleListener serverConsoleListener = new ServerConsoleListener(commandManager, scanner);
@@ -47,14 +44,14 @@ public final class Server {
                 }
             } catch (IOException e) {
                 System.out.println(e.getMessage());
-                LOGGER.error(e.getMessage());
+                ServerLogger.logErrorMessage(e.getMessage());
             }
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Имя файла не указано");
-            LOGGER.error("Имя файла не указано");
+            ServerLogger.logErrorMessage("Имя файла не указано");
         } catch (FileNotFoundException | FileReadPermissionException | RouteValidateException e) {
             System.out.println(e.getMessage());
-            LOGGER.error(e.getMessage());
+            ServerLogger.logErrorMessage(e.getMessage());
         }
     }
 }
