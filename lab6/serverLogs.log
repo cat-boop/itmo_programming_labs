@@ -1,21 +1,30 @@
-13:00:38.919 [main] DEBUG org.jboss.logging - Logging Provider: org.jboss.logging.Slf4jLoggerProvider
-13:00:39.074 [main] INFO  com.lab.server.Server - Файл успешно прочитан, ожидание подключения
-13:00:49.990 [main] INFO  com.lab.server.Application - Клиент подключился
-13:00:52.324 [main] DEBUG com.lab.server.Application - Прочитано 175 байт
-13:00:52.349 [main] INFO  com.lab.server.Application - Клиент отправил запрос: [Имя команды = show]
-13:00:52.351 [main] INFO  com.lab.server.Application - Результат исполнения запроса: {Id = 1, name = "Pitdsfand", coordinates = {74, 16}, creation date = 2022-02-11T20:37:36.188098, from = {7, 88, 9.0, "Piter"}, to = {1, 2, 3.0, "Finland"}, distance = 2.3456543}
-{Id = 6, name = "Tour_de_france", coordinates = {412, 23}, creation date = 2022-02-20T14:24:03.578513500, from = {5, 8, 1.2, "Paris"}, to = null, distance = 1.1}
-{Id = 2, name = "ertgh", coordinates = {3, 0}, creation date = 2022-02-21T01:41:14.514270800, from = {3, 48381, 4.5, "Krsk"}, to = null, distance = 4.5}
-{Id = 7, name = "jsdlsndknflsdkfnsdljfndsjfdsjfdsfdjfdfjfhdjhfjdhfjdhfjdfhjdfhjdf", coordinates = {5, 5}, creation date = 2022-04-10T12:47:21.535852300, from = {55, 5, 5.0, "5"}, to = null, distance = 5.0}
-{Id = 8, name = "klnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrnklnnsjlgrn", coordinates = {6, 6}, creation date = 2022-04-10T12:50:27.131745, from = {6, 6, 6.0, "6"}, to = null, distance = 7.0}
-{Id = 3, name = "rg", coordinates = {3, 2}, creation date = 2022-04-05T23:03:48.136225500, from = {1, 2, 5.0, "t"}, to = null, distance = 54657.0}
-13:00:52.355 [main] INFO  com.lab.server.Application - Отправлен ответ размером 2482 байт
-13:01:03.800 [main] DEBUG com.lab.server.Application - Прочитано 175 байт
-13:01:03.801 [main] INFO  com.lab.server.Application - Клиент отправил запрос: [Имя команды = info]
-13:01:03.801 [main] INFO  com.lab.server.Application - Результат исполнения запроса: Тип коллекции - class java.util.TreeSet
-Количество элементов - 6
-Дата инициализации - 2022-04-10T13:00:39.072772100
-13:01:03.801 [main] INFO  com.lab.server.Application - Отправлен ответ размером 252 байт
-13:01:21.408 [Thread-0] INFO  com.lab.server.ServerConsoleListener - На сервера введена команда "exit"
-13:01:21.414 [Thread-0] INFO  com.lab.server.ServerConsoleListener - Коллекция успешно сохранена в файл
-13:01:21.414 [Thread-0] INFO  com.lab.server.ServerConsoleListener - Работа сервера остановлена
+23:54:22.252 [main] DEBUG org.jboss.logging - Logging Provider: org.jboss.logging.Slf4jLoggerProvider
+23:54:22.417 [main] INFO  com.lab.server.ServerLogger - Файл успешно прочитан, ожидание подключения
+23:54:26.482 [main] INFO  com.lab.server.ServerLogger - Клиент подключился
+23:54:31.400 [main] DEBUG com.lab.server.ServerLogger - Прочитано 175 байт
+23:54:31.422 [main] INFO  com.lab.server.ServerLogger - Клиент отправил запрос: [Имя команды = info]
+23:54:31.422 [main] INFO  com.lab.server.ServerLogger - Результат исполнения запроса: Тип коллекции - class java.util.TreeSet
+Количество элементов - 8
+Дата инициализации - 2022-04-18T23:54:22.415346400
+23:54:31.424 [main] INFO  com.lab.server.ServerLogger - Отправлен ответ размером 288 байт
+23:54:41.644 [main] DEBUG com.lab.server.ServerLogger - Прочитано 175 байт
+23:54:41.646 [main] INFO  com.lab.server.ServerLogger - Клиент отправил запрос: [Имя команды = help]
+23:54:41.648 [main] INFO  com.lab.server.ServerLogger - Результат исполнения запроса: add: добавить новый элемент в коллекцию
+max_by_distance: вывести любой объект из коллекции, значение поля distance которого является максимальным
+add_if_min: добавить новый элемент в коллекцию, если его значение меньше, чем у наименьшего элемента этой коллекции
+clear: очистить коллекцию
+show: вывести в стандартный поток вывода все элементы коллекции в строковом представлении
+remove_by_id: удалить элемент из коллекции по его id
+update: обновить значение элемента коллекции, id которого равен заданному
+remove_greater: удалить из коллекции все элементы, превышающие заданный
+remove_lower: удалить из коллекции все элементы, меньшие, чем заданный
+help: вывести справку по доступным командам
+count_less_than_distance: вывести количество элементов, значение поля distance которых меньше заданного
+count_greater_than_distance: вывести количество элементов, значение поля distance которых больше заданного
+info: вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)
+23:54:41.648 [main] INFO  com.lab.server.ServerLogger - Отправлен ответ размером 1847 байт
+23:56:02.638 [main] DEBUG com.lab.server.ServerLogger - null
+23:56:02.638 [main] INFO  com.lab.server.ServerLogger - Клиент отключился
+23:56:49.653 [Thread-0] INFO  com.lab.server.ServerLogger - На сервера введена команда "exit"
+23:56:49.668 [Thread-0] INFO  com.lab.server.ServerLogger - Коллекция успешно сохранена в файл
+23:56:49.668 [Thread-0] INFO  com.lab.server.ServerLogger - Работа сервера остановлена

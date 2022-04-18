@@ -15,7 +15,7 @@ public class CommandAnalyzer {
         analyzeCommand(command);
     }
 
-    public boolean isCommandScript() {
+    public boolean commandIsScript() {
         return commandScript;
     }
 

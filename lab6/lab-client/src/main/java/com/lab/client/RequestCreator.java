@@ -11,7 +11,6 @@ public final class RequestCreator {
         CommandAnalyzer commandAnalyzer = new CommandAnalyzer(command);
         Request request = new Request(commandAnalyzer.getCommandName());
         if (commandAnalyzer.isCommandHaveArgument()) {
-            System.out.println(commandAnalyzer.getCommandArgument());
             Class<?> argumentClass = commandAnalyzer.getArgumentClass();
             Number commandArgument = null;
             try {
