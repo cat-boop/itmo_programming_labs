@@ -1,20 +1,19 @@
 package com.lab.server.Commands;
 
-import com.lab.common.Data.Route;
 import com.lab.common.util.Request;
+import com.lab.common.util.Response;
 import com.lab.server.CollectionManager;
 
-import java.util.stream.Collectors;
-
-public class ShowCommand implements Command {
+public class ShowCommand extends AbstractCommand {
     private final CollectionManager collectionManager;
 
     public ShowCommand(CollectionManager collectionManager) {
+        super("вывести в стандартный поток вывода все элементы коллекции в строковом представлении", false);
         this.collectionManager = collectionManager;
     }
 
     @Override
-    public String execute(Request request) {
-        return collectionManager.getCollection().stream().map(Route::toString).collect(Collectors.joining("\n"));
+    public Response execute(Request request) {
+        return new Response(collectionManager.getCollection());
     }
 }

@@ -2,12 +2,14 @@ package com.lab.server;
 
 import com.lab.common.util.FileManager;
 import com.lab.common.util.Request;
+import com.lab.common.util.Response;
 import com.lab.server.Commands.AddCommand;
 import com.lab.server.Commands.AddIfMinCommand;
 import com.lab.server.Commands.ClearCommand;
-import com.lab.server.Commands.Command;
+import com.lab.server.Commands.AbstractCommand;
 import com.lab.server.Commands.CountGreaterThanDistanceCommand;
 import com.lab.server.Commands.CountLessThanDistanceCommand;
+import com.lab.server.Commands.ExitCommand;
 import com.lab.server.Commands.HelpCommand;
 import com.lab.server.Commands.InfoCommand;
 import com.lab.server.Commands.MaxByDistanceCommand;
@@ -25,7 +27,7 @@ import java.util.Map;
  * Class that execute user commands
  */
 public class CommandManager {
-    private static Map<String, Command> commands;
+    private static Map<String, AbstractCommand> commands;
 
     public CommandManager(FileManager fileManager, CollectionManager collectionManager) {
         commands = new HashMap<>();
@@ -43,15 +45,16 @@ public class CommandManager {
         commands.put("save", new SaveCommand(collectionManager, fileManager));
         commands.put("show", new ShowCommand(collectionManager));
         commands.put("update", new UpdateCommand(collectionManager));
+        commands.put("exit", new ExitCommand());
     }
 
-    public static Map<String, Command> getCommands() {
+    public static Map<String, AbstractCommand> getCommands() {
         return commands;
     }
 
-    public String executeCommand(Request request) {
+    public Response executeCommand(Request request) {
         String commandName = request.getCommandName();
-        Command command = commands.get(commandName);
+        AbstractCommand command = commands.get(commandName);
         return command.execute(request);
     }
 }
