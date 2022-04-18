@@ -29,7 +29,7 @@ public final class Serializer {
             outputStream.flush();
             return arrayOutputStream.toByteArray();
         } catch (IOException e) {
-            throw new SerializeException("Невозможно сериализовать запрос");
+            throw new SerializeException("Невозможно сериализовать ответ");
         }
     }
 }
