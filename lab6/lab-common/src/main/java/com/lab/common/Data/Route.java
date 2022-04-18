@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 /**
  * Main class that stored in collection
  */
-public class Route implements Serializable {
+public class Route implements Serializable, Comparable<Route> {
     @NotNull
     @Min(1)
     private Long id; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
@@ -105,5 +105,10 @@ public class Route implements Serializable {
     public String toString() {
         return "{Id = " + id + ", name = \"" + name + "\", coordinates = " + coordinates + ", creation date = "
                 + creationDate.toString() + ", from = " + from + ", to = " + to + ", distance = " + distance + "}";
+    }
+
+    @Override
+    public int compareTo(Route o) {
+        return this.getName().compareTo(o.getName());
     }
 }
