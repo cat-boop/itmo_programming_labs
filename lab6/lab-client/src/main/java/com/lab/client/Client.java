@@ -22,12 +22,11 @@ public final class Client {
         InetSocketAddress socketAddress = new InetSocketAddress(host, PORT);
 
         try (Selector selector = Selector.open();
-             SocketChannel socketChannel = SocketChannel.open()) {
+             SocketChannel socketChannel = SocketChannel.open(socketAddress)) {
 
-            socketChannel.configureBlocking(false);
-            socketChannel.connect(socketAddress);
             socketChannel.finishConnect();
-            socketChannel.register(selector, SelectionKey.OP_READ | SelectionKey.OP_WRITE);
+            socketChannel.configureBlocking(false);
+            socketChannel.register(selector, SelectionKey.OP_READ);
 
             Application application = new Application(selector, socketChannel, scanner);
             application.startInteractiveMode();

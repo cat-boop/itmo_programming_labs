@@ -42,7 +42,7 @@ public class Application {
         while (!"exit".equals(command)) {
             try {
                 CommandAnalyzer commandAnalyzer = new CommandAnalyzer(command);
-                if (commandAnalyzer.isCommandScript()) {
+                if (commandAnalyzer.commandIsScript()) {
                     executeScript(commandAnalyzer.getCommandArgument());
                 } else {
                     sendReceiveLoop(command, consoleRouteReader);
@@ -79,10 +79,9 @@ public class Application {
         try {
             Request request = RequestCreator.createRequest(command, routeReader);
             byte[] serializedRequest = Serializer.serializeRequest(request);
-            System.out.println(serializedRequest.length);
             socketChannel.write(ByteBuffer.wrap(serializedRequest));
             Response response = receiveResponse();
-            System.out.println("Ответ с сервера: " + response.getServerMessage());
+            System.out.println("Ответ с сервера: " + response);
         } catch (SerializeException | DeserializeException e) {
             System.out.println(e.getMessage());
         }
